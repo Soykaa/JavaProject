@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTaskActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="50dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/imageBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_back"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageSave"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="315dp"
+        android:layout_marginLeft="315dp"
+
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_done_button"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        android:src="@drawable/ic_done"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/setDeadline"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="180dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_deadline"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/setPublicity"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="250dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_set_publicity"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/setPrice"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="285dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_task_price"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/inputTaskTitle"
+        android:layout_width="390dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="410dp"
+        android:layout_marginLeft="410dp"
+        android:layout_marginTop="100dp"
+        android:background="@null"
+        android:hint="Untitled"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toStartOf="@+id/scrollView4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/scrollView4"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="100dp" />
+
+
+    <EditText
+        android:id= "@+id/inputTaskDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="350dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="Type task description here..."
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/deadlineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="185dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="29/05/2020"
+        tools:ignore="MissingConstraints"
+        android:layout_marginStart="60dp" />
+
+
+    <TextView
+        android:id="@+id/addresseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="254dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="Me"
+        tools:ignore="MissingConstraints"
+        android:layout_marginStart="60dp" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="291dp"
+        android:background="@null"
+        android:gravity="top"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="textMultiLine"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        tools:ignore="MissingConstraints"
+        android:id="@+id/priceText"
+        android:textStyle="bold"
+        android:hint="1$"
+        android:layout_marginStart="60dp" />
+
+
+    <ImageView
+        android:id="@+id/deadlineTime"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="215dp"
+        android:src="@drawable/ic_deadine_time"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="219dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="16:30"
+        tools:ignore="MissingConstraints"
+        android:layout_marginStart="60dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

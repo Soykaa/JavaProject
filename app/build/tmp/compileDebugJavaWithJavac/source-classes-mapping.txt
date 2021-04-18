@@ -1,0 +1,15 @@
+com/planner/BuildConfig.java
+ com.planner.BuildConfig
+com/planner/WelcomeScreen.java
+ com.planner.WelcomeScreen
+com/planner/DatePickerFragment.java
+ com.planner.DatePickerFragment
+com/planner/SignInActivity.java
+ com.planner.SignInActivity
+ com.planner.SignInActivity$1
+com/planner/TimePickerFragment.java
+ com.planner.TimePickerFragment
+com/planner/MainActivity.java
+ com.planner.MainActivity
+com/planner/NewTaskActivity.java
+ com.planner.NewTaskActivity
