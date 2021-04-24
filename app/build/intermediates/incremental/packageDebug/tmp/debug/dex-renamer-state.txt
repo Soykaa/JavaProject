@@ -1,4 +1,4 @@
-#Sun Apr 18 19:31:05 MSK 2021
-base.0=/home/user/2019-2020-hse/javaProj/JavaProject/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+#Sun Apr 25 02:05:54 MSK 2021
+base.0=/Users/milyausha/Desktop/planner/JavaProject/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
