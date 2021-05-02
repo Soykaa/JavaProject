@@ -138,7 +138,7 @@
         android:inputType="textMultiLine"
         android:minHeight="100dp"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="18sp"
         tools:ignore="MissingConstraints" />
 
 
@@ -150,9 +150,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="185dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:text="29/05/2020"
+        android:text="Set deadline date"
         tools:ignore="MissingConstraints"
         android:layout_marginStart="60dp" />
 
@@ -165,9 +165,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="254dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:text="Me"
+        android:text="Select an addresse"
         tools:ignore="MissingConstraints"
         android:layout_marginStart="60dp" />
 
@@ -185,11 +185,11 @@
         android:includeFontPadding="false"
         android:inputType="textMultiLine"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
         tools:ignore="MissingConstraints"
         android:id="@+id/priceText"
         android:textStyle="bold"
-        android:hint="1$"
+        android:hint="Set task cost"
         android:layout_marginStart="60dp" />
 
 
@@ -217,9 +217,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="219dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:text="16:30"
+        android:text="Set deadline time"
         tools:ignore="MissingConstraints"
         android:layout_marginStart="60dp" />
 

@@ -20,8 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -92,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_new_task:
                 createTask();
                 break;
+            case R.id.nav_new_wish:
+                createWish();
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
 
@@ -100,6 +101,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void createTask() {
         Intent intent = new Intent(this, NewTaskActivity.class);
+        startActivity(intent);
+    }
+
+    private void createWish() {
+        Intent intent = new Intent(this, NewWishActivity.class);
         startActivity(intent);
     }
 

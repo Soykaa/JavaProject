@@ -4,14 +4,16 @@ com/planner/WelcomeScreen.java
  com.planner.WelcomeScreen
 com/planner/DatePickerFragment.java
  com.planner.DatePickerFragment
+com/planner/NewWishActivity.java
+ com.planner.NewWishActivity
+com/planner/MainActivity.java
+ com.planner.MainActivity
+com/planner/Task.java
+ com.planner.Task
 com/planner/TimePickerFragment.java
  com.planner.TimePickerFragment
+com/planner/NewTaskActivity.java
+ com.planner.NewTaskActivity
 com/planner/SignInActivity.java
  com.planner.SignInActivity
  com.planner.SignInActivity$1
-com/planner/Task.java
- com.planner.Task
-com/planner/MainActivity.java
- com.planner.MainActivity
-com/planner/NewTaskActivity.java
- com.planner.NewTaskActivity

@@ -2021,6 +2021,7 @@ id mtrl_view_tag_bottom_padding
 id multiply
 id nav_getting_started
 id nav_new_task
+id nav_new_wish
 id nav_sign_out
 id nav_view
 id navigation_header_container
@@ -2245,6 +2246,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
 layout activity_new_task
+layout activity_new_wish
 layout activity_sign_in
 layout browser_actions_context_menu_page
 layout browser_actions_context_menu_row
