@@ -15,12 +15,15 @@
             <item
                 android:id="@+id/nav_new_task"
                 android:title="New task" />
+
             <item
-                android:id="@+id/nav_new_wish"
-                android:title="New wish" />
+                android:id="@+id/nav_all_wishes"
+                android:title="All wishes" />
+
             <item
                 android:id="@+id/nav_sign_out"
                 android:title="Sign out" />
+
         </menu>
     </item>
 </menu>

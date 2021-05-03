@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/AppTheme" >
+        <activity android:name="com.planner.WishActivity" />
         <activity android:name="com.planner.NewWishActivity" />
         <activity
             android:name="com.planner.NewTaskActivity"

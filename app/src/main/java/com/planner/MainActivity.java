@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_new_task:
                 createTask();
                 break;
-            case R.id.nav_new_wish:
-                createWish();
+            case R.id.nav_all_wishes:
+                viewAllWishes();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void createTask() {
-        Intent intent = new Intent(this, NewTaskActivity.class);
+    private void viewAllWishes() {
+        Intent intent = new Intent(this, WishActivity.class);
         startActivity(intent);
     }
 
-    private void createWish() {
-        Intent intent = new Intent(this, NewWishActivity.class);
+    private void createTask() {
+        Intent intent = new Intent(this, NewTaskActivity.class);
         startActivity(intent);
     }
 
