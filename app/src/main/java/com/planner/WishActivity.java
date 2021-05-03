@@ -28,6 +28,9 @@ public class WishActivity extends AppCompatActivity {
 
         ImageView imageAddWish = findViewById(R.id.imageAdd);
         ListView wishListView = findViewById(R.id.wishesListView);
+        ImageView imageBack = findViewById(R.id.imageBackAllWishes);
+
+        imageBack.setOnClickListener(v -> onBackPressed());
 
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(getApplicationContext(), NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
