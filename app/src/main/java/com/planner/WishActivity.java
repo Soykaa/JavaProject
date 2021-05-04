@@ -36,6 +36,7 @@ public class WishActivity extends AppCompatActivity {
                 new Intent(getApplicationContext(), NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
         List<String> wishes = new ArrayList<>();
+        List<Wish> wishList = new ArrayList<>();
         ArrayAdapter<String> wishAdapter = new ArrayAdapter<>(this, R.layout.wishes_container, wishes);
         wishListView.setAdapter(wishAdapter);
 
@@ -45,11 +46,10 @@ public class WishActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 wishes.clear();
                 for (DataSnapshot s : snapshot.getChildren()) {
-                    ArrayList<String> list = new ArrayList<>();
-                    for (DataSnapshot ss : s.getChildren()) {
-                        list.add(Objects.requireNonNull(ss.getValue()).toString());
-                    }
-                    wishes.add(list.get(2));
+                    Wish w = s.getValue(Wish.class);
+                    String txt = Objects.requireNonNull(w).getTitle() + "\nPrice: " + w.getPrice();
+                    wishes.add(txt);
+                    wishList.add(w);
                 }
                 wishAdapter.notifyDataSetChanged();
             }
