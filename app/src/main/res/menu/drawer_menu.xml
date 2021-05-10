@@ -13,6 +13,9 @@
     <item android:title="Settings">
         <menu>
             <item
+                android:id="@+id/nav_friends"
+                android:title="Friends" />
+            <item
                 android:id="@+id/nav_new_task"
                 android:title="New task" />
 

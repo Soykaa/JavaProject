@@ -23,6 +23,14 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -92,6 +100,7 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            addUser(acct);
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
 
@@ -103,5 +112,27 @@ public class SignInActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+
+    private void addUser(GoogleSignInAccount account) {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userNameRef = rootRef.child("users");
+        Query queries = userNameRef.orderByChild("name").equalTo(account.getDisplayName());
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String userid = user.getUid();
+                    userNameRef.child(userid).setValue(new User(account.getDisplayName(), account.getPhotoUrl().toString()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError databaseError) {
+            }
+        };
+        queries.addListenerForSingleValueEvent(eventListener);
     }
 }
