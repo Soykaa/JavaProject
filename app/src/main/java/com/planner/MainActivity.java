@@ -1,15 +1,18 @@
 package com.planner;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -20,13 +23,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private DrawerLayout drawer;
+    protected DrawerLayout drawer;
     private TextView name;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +63,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
+        image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null) {
             if (name != null) {
                 name.setText(signInAccount.getDisplayName());
             }
-            System.out.println(signInAccount.getDisplayName());
+            if (image != null) {
+                Uri profilePhotoUrl = signInAccount.getPhotoUrl();
+                if (profilePhotoUrl != null) {
+                    String imageStr = profilePhotoUrl.toString();
+                    Picasso.get()
+                            .load(imageStr)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .into(image);
+                }
+            }
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -93,14 +107,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_all_wishes:
                 viewAllWishes();
                 break;
+            case R.id.nav_friends:
+                friends();
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
 
+
     private void viewAllWishes() {
         Intent intent = new Intent(this, WishActivity.class);
+        startActivity(intent);
+    }
+
+    private void friends() {
+        Intent intent = new Intent(this, FriendActivity.class);
         startActivity(intent);
     }
 
@@ -116,6 +139,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mGoogleSignInClient.signOut();
         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
         startActivity(intent);
-
     }
 }
