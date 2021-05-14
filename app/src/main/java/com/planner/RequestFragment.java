@@ -33,6 +33,7 @@ public class RequestFragment extends Fragment {
     private DatabaseReference requestsRef, userRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    private static final String TAG = "Request Fragment";
 
     @Nullable
     @Override
@@ -66,21 +67,37 @@ public class RequestFragment extends Fragment {
                                     .load(imageId)
                                     .placeholder(R.drawable.ic_launcher_foreground)
                                     .into(requestsViewHolder.userImage);
-                            requestsViewHolder.currentUserId = userId;
+                            requestsViewHolder.acceptRequest.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.d(TAG, "Accept request from " + name);
+                                    Log.d(TAG, "Friend's id: " + userId);
+                                    Log.d(TAG, "My id " + currentUserId);
+                                    userRef.child(currentUserId).child("friends").child(userId).setValue(true);
+                                    userRef.child(currentUserId).child("requests").child(userId).setValue(null);
+                                    userRef.child(userId).child("friends").child(currentUserId).setValue(true);
+                                    userRef.child(userId).child("requests").child(currentUserId).setValue(null);
+                                }
+                            });
+                            requestsViewHolder.declineRequest.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.d(TAG, "Decline request from " + name);
+                                    userRef.child(currentUserId).child("requests").child(userId).setValue(null);
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
 
             @NonNull
             @Override
             public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_friend_item, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_request_item, parent, false);
                 RequestsViewHolder viewHolder = new RequestsViewHolder(view);
                 return viewHolder;
             }
@@ -91,35 +108,16 @@ public class RequestFragment extends Fragment {
 
     public static class RequestsViewHolder extends RecyclerView.ViewHolder {
 
-        private String currentUserId, friendId;
         private final TextView userName;
         private final CircleImageView userImage;
-        private DatabaseReference requestsRef, userRef;
-        private FirebaseAuth mAuth;
+        private Button acceptRequest, declineRequest;
 
         public RequestsViewHolder(@NonNull View itemView) {
             super(itemView);
-            userName = itemView.findViewById(R.id.friend_name);
-            userImage = itemView.findViewById(R.id.friend_image);
-            Button acceptRequest = itemView.findViewById(R.id.button_accept_request);
-            Button declineRequest = itemView.findViewById(R.id.button_decline_request);
-            acceptRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("hi", "Clicked accept " + currentUserId);
-                    mAuth = FirebaseAuth.getInstance();
-                    currentUserId = mAuth.getCurrentUser().getUid();
-                    requestsRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("requests");
-                    userRef = FirebaseDatabase.getInstance().getReference().child("users");
-                    //TODO add friend, delete request
-                }
-            });
-            declineRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("hi", "Clicked decline " + currentUserId);
-                }
-            });
+            userName = itemView.findViewById(R.id.request_name);
+            userImage = itemView.findViewById(R.id.request_image);
+            acceptRequest = itemView.findViewById(R.id.button_accept_request);
+            declineRequest = itemView.findViewById(R.id.button_decline_request);
         }
 
 

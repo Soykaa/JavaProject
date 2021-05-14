@@ -30,6 +30,7 @@ public class RequestDialog extends AppCompatDialogFragment {
     private static final String TAG = "Request Dialog";
     private DatabaseReference rootRef, userRef;
     private EditText editTextUsername;
+    FirebaseUser currentUser;
 
     @NonNull
     @Override
@@ -40,12 +41,12 @@ public class RequestDialog extends AppCompatDialogFragment {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userNameRef = rootRef.child("users");
         editTextUsername = view.findViewById(R.id.edit_username);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         AlertDialog dialog = builder.setView(view)
                 .setTitle("Type in user name")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 })
                 .setPositiveButton("Send request", null)
@@ -54,33 +55,52 @@ public class RequestDialog extends AppCompatDialogFragment {
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userNameRef.orderByChild("name").equalTo(editTextUsername.getText().toString()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            //Username exists
-                            User user = new User();
-                          //  Log.i(TAG, dataSnapshot.getKey());
-                            for (DataSnapshot datas : dataSnapshot.getChildren()) {
-                                Log.i(TAG, datas.getKey());
+                String requestName = editTextUsername.getText().toString();
+                if (requestName.equals(currentUser.getDisplayName())) {
+                    Snackbar.make(view, "Cannot send request to yourself ", Snackbar.LENGTH_LONG).show();
+                } else {
+                    userNameRef.orderByChild("name").equalTo(requestName).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String userId = "";
+                                for (DataSnapshot datas : dataSnapshot.getChildren()) {
+                                    Log.i(TAG, "get user id " + datas.getKey());
+                                    userId = datas.getKey();
+                                }
+                                String finalUserId = userId;
+                                userNameRef.child(currentUser.getUid()).child("friends").child(finalUserId).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
+                                        } else {
+                                            //Username exists and isn't already a friend
 
-                                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                                String userId = currentUser.getUid();
-                                userNameRef.child(datas.getKey()).child("requests").child(userId).setValue(true);
-                                dialog.dismiss();
+                                            Log.i(TAG, "send request to " + finalUserId);
+                                            String userId = currentUser.getUid();
+                                            userNameRef.child(finalUserId).child("requests").child(userId).setValue(true);
+                                            dialog.dismiss();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            } else {
+                                Log.i(TAG, "no such user");
+                                //Username does not exist
+                                Snackbar.make(view, "No user with such name", Snackbar.LENGTH_LONG).show();
                             }
-                        } else {
-                            Log.i(TAG, "no such user");
-                            //Username does not exist
-                            Snackbar.make(view, "No user with such name", Snackbar.LENGTH_LONG).show();
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
             }
         });
         return dialog;
