@@ -1,119 +1,143 @@
 package com.planner;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            Intent intent = new Intent(getApplicationContext(), Profile.class);
-            startActivity(intent);
-        }
-
-    }
+    protected DrawerLayout drawer;
+    private TextView name;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+        }
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        createRequest();
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeScreen()).commit();
+            navigationView.setCheckedItem(R.id.nav_getting_started);
+        }
 
-        findViewById(R.id.google_signIn).setOnClickListener(view -> signIn());
-
-    }
-
-    private void createRequest() {
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-    }
-
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                // ...
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
+        image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (signInAccount != null) {
+            if (name != null) {
+                name.setText(signInAccount.getDisplayName());
+            }
+            if (image != null) {
+                Uri profilePhotoUrl = signInAccount.getPhotoUrl();
+                if (profilePhotoUrl != null) {
+                    String imageStr = profilePhotoUrl.toString();
+                    Picasso.get()
+                            .load(imageStr)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .into(image);
+                }
             }
         }
     }
 
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), Profile.class);
-                            startActivity(intent);
-
-                        } else {
-                            Toast.makeText(MainActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        // ...
-                    }
-                });
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_getting_started:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeScreen()).commit();
+                break;
+            case R.id.nav_sign_out:
+                logOut();
+                break;
+            case R.id.nav_new_task:
+                createTask();
+                break;
+            case R.id.nav_all_wishes:
+                viewAllWishes();
+                break;
+            case R.id.nav_friends:
+                friends();
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+
+    private void viewAllWishes() {
+        Intent intent = new Intent(this, WishActivity.class);
+        startActivity(intent);
+    }
+
+    private void friends() {
+        Intent intent = new Intent(this, FriendActivity.class);
+        startActivity(intent);
+    }
+
+    private void createTask() {
+        Intent intent = new Intent(this, NewTaskActivity.class);
+        startActivity(intent);
+    }
+
+    private void logOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        FirebaseAuth.getInstance().signOut();
+        mGoogleSignInClient.signOut();
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+        startActivity(intent);
+    }
 }

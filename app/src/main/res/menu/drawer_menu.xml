@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_getting_started"
+            android:title="Getting started" />
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_friends"
+                android:title="Friends" />
+            <item
+                android:id="@+id/nav_new_task"
+                android:title="New task" />
+
+            <item
+                android:id="@+id/nav_all_wishes"
+                android:title="All wishes" />
+
+            <item
+                android:id="@+id/nav_sign_out"
+                android:title="Sign out" />
+
+        </menu>
+    </item>
+</menu>

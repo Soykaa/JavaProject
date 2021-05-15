@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTaskActivity">
+
+    <ScrollView
+        android:id="@+id/scrollViewTask"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="50dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/imageBackTask"
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_back"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageSaveTask"
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="315dp"
+        android:layout_marginLeft="315dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_done_button"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        android:src="@drawable/ic_done"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/setDeadlineTask"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="180dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_deadline"
+
+        app:tint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/setPublicityTask"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="250dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_set_publicity"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/setPriceTask"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="285dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_task_price"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/inputTitleTask"
+
+        android:layout_width="390dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="410dp"
+        android:layout_marginLeft="410dp"
+        android:layout_marginTop="100dp"
+        android:background="@null"
+        android:hint="Untitled"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:textSize="35sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scrollViewTask"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/scrollViewTask"
+
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="100dp" />
+
+
+    <EditText
+        android:id= "@+id/inputDescTask"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="350dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="Type task description here..."
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/deadlineTextTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="185dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Set deadline date"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/addresseTextTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="254dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Select an addresse"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <EditText
+        android:id="@+id/priceTextTask"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="291dp"
+        android:background="@null"
+        android:gravity="top"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="textMultiLine"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:hint="Set task cost"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/deadlineTimeTask"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="215dp"
+        android:src="@drawable/ic_deadine_time"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/timeTextTask"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="219dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Set deadline time"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

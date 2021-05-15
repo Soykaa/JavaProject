@@ -1,0 +1,4 @@
+com/planner/test/BuildConfig.java
+ com.planner.test.BuildConfig
+com/planner/ExampleInstrumentedTest.java
+ com.planner.ExampleInstrumentedTest
