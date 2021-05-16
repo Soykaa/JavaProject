@@ -9,11 +9,14 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +43,23 @@ public class WishActivity extends AppCompatActivity {
         ArrayAdapter<String> wishAdapter = new ArrayAdapter<>(this, R.layout.wishes_container, wishes);
         wishListView.setAdapter(wishAdapter);
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("wishes");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = mAuth.getCurrentUser().getUid();
+
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        //DatabaseReference wishesRef = FirebaseDatabase.getInstance().getReference().child("wishes");
+        //DatabaseReference userWishesIDRef = FirebaseDatabase.getInstance().getReference().
+                                            //child("users").child(currentUserID).child("wishIDs");
+
+
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 wishes.clear();
-                for (DataSnapshot s : snapshot.getChildren()) {
-                    Wish w = s.getValue(Wish.class);
+                for (DataSnapshot s : snapshot.child("users").child(currentUserID).child("wishIDs").getChildren()) {
+                    String wishID = s.getValue(String.class);
+                    Wish w = snapshot.child("wishes").child(wishID).getValue(Wish.class);
+
                     String txt = Objects.requireNonNull(w).getTitle() + "\nPrice: " + w.getPrice();
                     wishes.add(txt);
                     wishList.add(w);
@@ -59,5 +72,5 @@ public class WishActivity extends AppCompatActivity {
 
             }
         });
-    }
+}
 }
