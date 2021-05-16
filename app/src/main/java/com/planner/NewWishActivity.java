@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +29,13 @@ public class NewWishActivity extends AppCompatActivity {
                     cost.getText().toString(),
                     description.getText().toString());
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            database.child("wishes").push().setValue(wish);
+            DatabaseReference wishRef = database.child("wishes").push();
+            wishRef.setValue(wish);
+
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            String currentUserID = mAuth.getCurrentUser().getUid();
+            database.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
+
             finish();
         });
     }
