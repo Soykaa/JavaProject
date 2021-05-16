@@ -5,7 +5,8 @@ public class Wish {
     private String price;
     private String description;
 
-    public Wish() {};
+    // must-have for database correct work!
+    public Wish() {}
 
     public Wish(String title, String price, String description) {
         this.title = title;
