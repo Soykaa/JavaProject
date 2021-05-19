@@ -6,12 +6,12 @@ public class Task {
     //time
     //private String owner;
     //private long cost;
-    private String cost;
+    private long cost;
     private String description;
 
     public Task() {};
 
-    public Task(String title, String cost, String description) {
+    public Task(String title, long cost, String description) {
         this.title = title;
         this.cost = cost;
         this.description = description;
@@ -21,7 +21,7 @@ public class Task {
         return title;
     }
 
-    public String getCost() {
+    public long getCost() {
         return cost;
     }
 

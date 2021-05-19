@@ -47,7 +47,7 @@ public class NewTaskActivity extends AppCompatActivity implements DatePickerDial
             EditText cost = findViewById(R.id.priceTextTask);
             EditText description = findViewById(R.id.inputDescTask);
             Task task = new Task(title.getText().toString(),
-                                 cost.getText().toString(),
+                                 Long.parseLong(cost.getText().toString()),
                                  description.getText().toString());
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             DatabaseReference taskRef = database.child("tasks").push();
