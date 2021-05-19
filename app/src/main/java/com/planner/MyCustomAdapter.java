@@ -8,31 +8,36 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
-    private final ArrayList<String> list;
     private final Context context;
+    private final ArrayList<Wish> wishList;
 
-    public MyCustomAdapter(ArrayList<String> list, Context context) {
-        this.list = list;
+    public MyCustomAdapter(Context context, ArrayList<Wish> wishList) {
         this.context = context;
+        this.wishList = wishList;
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return wishList.size();
     }
 
     @Override
     public Object getItem(int pos) {
-        return list.get(pos);
+        return wishList.get(pos);
     }
 
     @Override
     public long getItemId(int pos) {
-        //return list.get(pos).getId();
         return pos;
     }
 
@@ -45,11 +50,18 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         }
 
         TextView tvContact= view.findViewById(R.id.tvContact);
-        tvContact.setText(list.get(position));
+        Wish w = wishList.get(position);
+        String text = Objects.requireNonNull(w).getTitle() + "\nPrice: " + w.getCost();
+        tvContact.setText(text);
         ImageView imageDelete = view.findViewById(R.id.deleteImage);
 
         imageDelete.setOnClickListener(v -> {
-            //do something, TODO
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference databaseReference = database.child("wishes").child(wishList.get(position).getId());
+            databaseReference.removeValue();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            String currentUserID = mAuth.getCurrentUser().getUid();
+            Toast.makeText(context, "Wish is deleted", Toast.LENGTH_LONG).show();
         });
         return view;
     }

@@ -16,32 +16,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class WishActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wish);
+
         ImageView imageAddWish = findViewById(R.id.imageAdd);
         ListView wishListView = findViewById(R.id.wishesListView);
         ImageView imageBack = findViewById(R.id.imageBackAllWishes);
+
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(getApplicationContext(), NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
-        ArrayList<String> wishes = new ArrayList<>();
-        //ArrayAdapter<String> wishAdapter = new ArrayAdapter<>(this, R.layout.wishes_container, wishes);
-        MyCustomAdapter wishAdapter = new MyCustomAdapter(wishes, WishActivity.this);
-        wishListView.setAdapter(wishAdapter);
 
+        ArrayList<Wish> wishes = new ArrayList<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserID = mAuth.getCurrentUser().getUid();
-
+        MyCustomAdapter wishAdapter = new MyCustomAdapter(WishActivity.this, wishes);
+        wishListView.setAdapter(wishAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        //DatabaseReference wishesRef = FirebaseDatabase.getInstance().getReference().child("wishes");
-        //DatabaseReference userWishesIDRef = FirebaseDatabase.getInstance().getReference().
-        //child("users").child(currentUserID).child("wishIDs");
-
+        String currentUserID = mAuth.getCurrentUser().getUid();
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -52,12 +47,14 @@ public class WishActivity extends AppCompatActivity {
                     String wishID = s.getValue(String.class);
                     Wish w = snapshot.child("wishes").child(wishID).getValue(Wish.class);
                     if (w != null) {
-                        String txt = Objects.requireNonNull(w).getTitle() + "\nPrice: " + w.getPrice();
-                        wishes.add(txt);
+                        wishes.add(w);
+                    } else {
+                        s.getRef().removeValue();
                     }
                 }
                 wishAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

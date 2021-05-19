@@ -1,6 +1,7 @@
 package com.planner;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -11,6 +12,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class NewWishActivity extends AppCompatActivity {
+    private boolean inputIsCorrect(EditText title, EditText cost, EditText desc) {
+        if (TextUtils.isEmpty(title.getText().toString())) {
+            title.setError("You did not enter a title");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(cost.getText().toString())) {
+            cost.setError("You did not enter a cost");
+            return false;
+        }
+
+        if (Integer.parseInt(cost.getText().toString()) <= 20) {
+            cost.setError("Cost is too small");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(desc.getText().toString())) {
+            desc.setError("You did not enter a description");
+            return false;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +44,25 @@ public class NewWishActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
 
         ImageView saveButton = findViewById(R.id.imageSaveWish);
+
         saveButton.setOnClickListener(v -> {
             EditText title = findViewById(R.id.inputTitleWish);
             EditText cost = findViewById(R.id.priceTextWish);
             EditText description = findViewById(R.id.inputDescWish);
+
+            if (!inputIsCorrect(title, cost, description)) {
+                return;
+            }
+
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+            DatabaseReference wishRef = database.child("wishes").push();
             Wish wish = new Wish(title.getText().toString(),
                     cost.getText().toString(),
-                    description.getText().toString());
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference wishRef = database.child("wishes").push();
+                    description.getText().toString(), wishRef.getKey());
             wishRef.setValue(wish);
 
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             String currentUserID = mAuth.getCurrentUser().getUid();
             database.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
 
