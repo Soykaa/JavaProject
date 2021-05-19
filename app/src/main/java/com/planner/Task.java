@@ -2,17 +2,20 @@ package com.planner;
 
 public class Task {
     private String title;
-    //date
+    private String date;
+    private String time;
     //time
     //private String owner;
     //private long cost;
-    private String cost;
+    private long cost;
     private String description;
 
     public Task() {};
 
-    public Task(String title, String cost, String description) {
+    public Task(String title, String date, String time,  long cost, String description) {
         this.title = title;
+        this.date = date;
+        this.time = time;
         this.cost = cost;
         this.description = description;
     }
@@ -21,7 +24,15 @@ public class Task {
         return title;
     }
 
-    public String getCost() {
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public long getCost() {
         return cost;
     }
 
