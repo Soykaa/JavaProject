@@ -4,9 +4,6 @@ public class Task {
     private String title;
     private String date;
     private String time;
-    //time
-    //private String owner;
-    //private long cost;
     private long cost;
     private String description;
 
