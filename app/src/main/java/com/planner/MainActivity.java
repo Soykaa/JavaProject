@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_new_task:
                 createTask();
                 break;
+            case R.id.nav_all_tasks:
+                viewAllTasks();
+                break;
             case R.id.nav_all_wishes:
                 viewAllWishes();
                 break;
@@ -116,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void viewAllTasks() {
+        Intent intent = new Intent(this, ViewTasksActivity.class);
+        startActivity(intent);
+    }
 
     private void viewAllWishes() {
         Intent intent = new Intent(this, WishActivity.class);
