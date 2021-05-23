@@ -93,16 +93,18 @@ public class NewTaskActivity extends AppCompatActivity
                 return;
             }
 
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+            DatabaseReference taskRef = database.child("tasks").push();
+
             Task task = new Task(title.getText().toString(),
                                  dateDeadline.getText().toString(),
                                  timeDeadline.getText().toString(),
                                  Integer.parseInt(reward.getText().toString()),
-                                 description.getText().toString());
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference taskRef = database.child("tasks").push();
+                                 description.getText().toString(), taskRef.getKey());
             taskRef.setValue(task);
 
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             String currentUserID = mAuth.getCurrentUser().getUid();
             database.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
 

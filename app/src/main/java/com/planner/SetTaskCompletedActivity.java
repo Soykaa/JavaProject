@@ -10,6 +10,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String title;
     private String desc;
     private int reward;
+    private int pos;
     private boolean activityRes;
 
     @Override
@@ -22,6 +23,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         title = getIntent().getStringExtra("title");
         desc = getIntent().getStringExtra("desc");
         reward = getIntent().getIntExtra("reward", 0);
+        pos = getIntent().getIntExtra("pos", 0);
+
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageSetTaskCompleted.setOnClickListener(v -> {
@@ -30,6 +33,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("title", title);
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
+            intent.putExtra("pos", pos);
             setResult(RESULT_OK, intent);
             finish();
         });

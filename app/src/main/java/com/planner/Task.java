@@ -6,24 +6,23 @@ public class Task {
     private String time;
     private int reward;
     private String description;
-    private boolean isDone;
+    String id;
 
     public Task() {};
 
-    public Task(String title, String date, String time, int reward, String description) {
+    public Task(String title, String date, String time, int reward, String description, String id) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.reward = reward;
         this.description = description;
-        isDone = false;
+        this.id = id;
     }
 
     public Task(String title, String description, int reward) {
         this.title = title;
         this.description = description;
         this.reward = reward;
-        isDone = true;
     }
 
     public String getTitle() {
@@ -46,16 +45,12 @@ public class Task {
         return description;
     }
 
-    public void setIsDone() {
-        isDone = true;
-    }
-
-    public boolean isDone() {
-        return isDone;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getId() {
+        return id;
     }
 }
 

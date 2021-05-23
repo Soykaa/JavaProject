@@ -8,6 +8,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,6 +19,19 @@ import java.util.ArrayList;
 
 public class ViewTasksActivity extends AppCompatActivity {
     private ArrayList<Task> tasks;
+    private TasksViewCustomAdapter taskAdapter;
+
+    private void makeCompleted(int position, Task tmp) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference taskRef = database.child("completedTasks").push();
+        taskRef.setValue(tmp);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = mAuth.getCurrentUser().getUid();
+        database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(taskRef.getKey());
+        DatabaseReference databaseReference = database.child("tasks").child(tasks.get(position).getId());
+        databaseReference.removeValue();
+        taskAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +44,7 @@ public class ViewTasksActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
 
         tasks = new ArrayList<>();
-        TasksViewCustomAdapter taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
+        taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("tasks");
 
@@ -41,10 +55,10 @@ public class ViewTasksActivity extends AppCompatActivity {
 
                 for (DataSnapshot s : snapshot.getChildren()) {
                     Task t = s.getValue(Task.class);
-                    if (t != null && t.getTitle() != null && !t.isDone()) {
+                    if (t != null) {
                         tasks.add(t);
                     }
-                    if (t == null || t.getTitle() == null) {
+                    if (t == null) {
                         s.getRef().removeValue();
                     }
                 }
@@ -61,7 +75,8 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("title", tasks.get(position).getTitle());
             intent.putExtra("reward", tasks.get(position).getReward());
             intent.putExtra("desc", tasks.get(position).getDescription());
-            tasks.get(position).setTitle(null);
+            intent.putExtra("pos", position);
+            taskAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
         });
     }
@@ -76,8 +91,9 @@ public class ViewTasksActivity extends AppCompatActivity {
                     String title = data.getStringExtra("title");
                     String desc = data.getStringExtra("desc");
                     int reward = data.getIntExtra("reward", 0);
+                    int position = data.getIntExtra("pos", -1);
                     Task tmp = new Task(title, desc, reward);
-                    tasks.add(tmp);
+                    makeCompleted(position, tmp);
                 }
             }
         }
