@@ -1,7 +1,6 @@
 package com.planner;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -15,7 +14,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ViewTasksActivity extends AppCompatActivity {
 
@@ -29,22 +27,21 @@ public class ViewTasksActivity extends AppCompatActivity {
 
         imageBack.setOnClickListener(v -> onBackPressed());
 
-        List<String> tasks = new ArrayList<>();
-        List<Task> taskList = new ArrayList<>();
-        ArrayAdapter<String> taskAdapter = new ArrayAdapter<>(this, R.layout.wishes_container, tasks);
+        ArrayList<Task> tasks = new ArrayList<>();
+        TasksViewCustomAdapter taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
-
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("tasks");
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();
+
                 for (DataSnapshot s : snapshot.getChildren()) {
                     Task t = s.getValue(Task.class);
-                    String txt = t.getTitle() + "\n\nDeadline: " + t.getDate() + " " + t.getTime() + "\nPrice: " + t.getCost() + "\nDescription: " + t.getDescription();
-                    tasks.add(txt);
-                    taskList.add(t);
+                    if (t != null) {
+                        tasks.add(t);
+                    }
                 }
                 taskAdapter.notifyDataSetChanged();
             }

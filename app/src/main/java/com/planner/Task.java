@@ -4,17 +4,19 @@ public class Task {
     private String title;
     private String date;
     private String time;
-    private long cost;
+    private long reward;
     private String description;
+    private boolean isDone;
 
     public Task() {};
 
-    public Task(String title, String date, String time,  long cost, String description) {
+    public Task(String title, String date, String time, long reward, String description) {
         this.title = title;
         this.date = date;
         this.time = time;
-        this.cost = cost;
+        this.reward = reward;
         this.description = description;
+        isDone = false;
     }
 
     public String getTitle() {
@@ -29,12 +31,20 @@ public class Task {
         return time;
     }
 
-    public long getCost() {
-        return cost;
+    public long getReward() {
+        return reward;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setIsDone() {
+        isDone = true;
+    }
+
+    public boolean isDone() {
+        return isDone;
     }
 }
 

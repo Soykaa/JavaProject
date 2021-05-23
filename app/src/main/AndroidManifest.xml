@@ -14,7 +14,7 @@
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".WishActivity" />
+        <activity android:name=".ViewWishesActivity" />
         <activity android:name=".ViewTasksActivity" />
         <activity android:name=".NewWishActivity" />
         <activity
