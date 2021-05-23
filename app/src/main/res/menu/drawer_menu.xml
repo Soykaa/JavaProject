@@ -6,27 +6,31 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_getting_started"
-            android:title="Getting started" />
+            android:id="@+id/nav_feed"
+            android:title="Feed" />
     </group>
 
-    <item android:title="Settings">
-        <menu>
-            <item
-                android:id="@+id/nav_friends"
-                android:title="Friends" />
-            <item
-                android:id="@+id/nav_new_task"
-                android:title="New task" />
+    <group
+        android:id="@+id/menu_middle"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_friends"
+            android:title="Friends" />
+        <item
+            android:id="@+id/nav_new_task"
+            android:title="New task" />
 
-            <item
-                android:id="@+id/nav_all_wishes"
-                android:title="All wishes" />
+        <item
+            android:id="@+id/nav_all_wishes"
+            android:title="All wishes" />
 
-            <item
-                android:id="@+id/nav_sign_out"
-                android:title="Sign out" />
+    </group>
 
-        </menu>
-    </item>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sign_out"
+            android:title="Sign out" />¬
+    </group>
+
+
 </menu>

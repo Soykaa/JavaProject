@@ -76,9 +76,9 @@ public class FriendFragment extends Fragment {
 
             @NonNull
             @Override
-            public FriendFragment.friendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_friend_item, parent, false);
-                FriendFragment.friendsViewHolder viewHolder = new FriendFragment.friendsViewHolder(view);
+            public friendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item, parent, false);
+                friendsViewHolder viewHolder = new FriendFragment.friendsViewHolder(view);
                 return viewHolder;
             }
         };
@@ -96,7 +96,5 @@ public class FriendFragment extends Fragment {
             userName = itemView.findViewById(R.id.friend_name);
             userImage = itemView.findViewById(R.id.friend_image);
         }
-
-
     }
 }

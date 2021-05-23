@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_feed_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/task_user_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:id="@+id/task_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/task_user_image"
+        android:layout_toRightOf="@+id/task_user_image" />
+
+    <TextView
+        android:id="@+id/user_task_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_user_name"
+        android:layout_toEndOf="@+id/task_user_image"
+        android:layout_toRightOf="@+id/task_user_image"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/user_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_user_image"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/editbox_background" />
+
+    <TextView
+        android:id="@+id/user_task_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_task_title"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/editbox_background" />
+
+</RelativeLayout>

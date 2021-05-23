@@ -9,6 +9,7 @@ public class Task {
     //private long cost;
     private long cost;
     private String description;
+    private String timestamp;
 
     public Task() {};
 

@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 public class RequestDialog extends AppCompatDialogFragment {
@@ -76,7 +77,6 @@ public class RequestDialog extends AppCompatDialogFragment {
                                             Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
                                         } else {
                                             //Username exists and isn't already a friend
-
                                             Log.i(TAG, "send request to " + finalUserId);
                                             String userId = currentUser.getUid();
                                             userNameRef.child(finalUserId).child("requests").child(userId).setValue(true);

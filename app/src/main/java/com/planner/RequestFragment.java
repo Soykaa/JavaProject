@@ -97,7 +97,7 @@ public class RequestFragment extends Fragment {
             @NonNull
             @Override
             public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_request_item, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_item, parent, false);
                 RequestsViewHolder viewHolder = new RequestsViewHolder(view);
                 return viewHolder;
             }
