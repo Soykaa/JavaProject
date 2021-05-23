@@ -23,7 +23,7 @@ public class NewWishActivity extends AppCompatActivity {
             return false;
         }
 
-        if (Integer.parseInt(cost.getText().toString()) <= 20) {
+        if (Integer.parseInt(cost.getText().toString()) < 20) {
             cost.setError("Cost is too small");
             return false;
         }

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.planner">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SetTaskCompletedActivity"></activity>
         <activity
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".WishActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ViewWishesActivity" />
+        <activity android:name=".ViewTasksActivity" />
         <activity android:name=".NewWishActivity" />
         <activity
             android:name=".NewTaskActivity"

@@ -1,14 +1,14 @@
 package com.planner;
 
-public class DoneTask {
+public class CompletedTask {
     private String owner;
     private Long timestamp;
 
 
-    public DoneTask() { }
+    public CompletedTask() { }
 
 
-    public DoneTask(String owner, Long timestamp) {
+    public CompletedTask(String owner, Long timestamp) {
         this.owner = owner;
         this.timestamp = timestamp;
     }

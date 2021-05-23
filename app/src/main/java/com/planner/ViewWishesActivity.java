@@ -17,11 +17,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class WishActivity extends AppCompatActivity {
+public class ViewWishesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wish);
+        setContentView(R.layout.activity_view_wishes);
 
         ImageView imageAddWish = findViewById(R.id.imageAdd);
         ListView wishListView = findViewById(R.id.wishesListView);
@@ -29,11 +29,11 @@ public class WishActivity extends AppCompatActivity {
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
-                new Intent(getApplicationContext(), NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
+                new Intent(this, NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
         ArrayList<Wish> wishes = new ArrayList<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        MyCustomAdapter wishAdapter = new MyCustomAdapter(WishActivity.this, wishes);
+        WishesViewCustomAdapter wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
         wishListView.setAdapter(wishAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         String currentUserID = mAuth.getCurrentUser().getUid();

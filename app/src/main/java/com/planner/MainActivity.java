@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_new_task:
                 createTask();
                 break;
+            case R.id.nav_all_tasks:
+                viewAllTasks();
+                break;
             case R.id.nav_all_wishes:
                 viewAllWishes();
                 break;
@@ -117,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void viewAllTasks() {
+        Intent intent = new Intent(this, ViewTasksActivity.class);
+        startActivity(intent);
+    }
 
     private void feed() {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FeedFragment()).commit();
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void viewAllWishes() {
-        Intent intent = new Intent(this, WishActivity.class);
+        Intent intent = new Intent(this, ViewWishesActivity.class);
         startActivity(intent);
     }
 

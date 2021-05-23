@@ -4,21 +4,26 @@ public class Task {
     private String title;
     private String date;
     private String time;
-    //time
-    //private String owner;
-    //private long cost;
-    private long cost;
+    private int reward;
     private String description;
     private String timestamp;
+    private String id;
 
     public Task() {};
 
-    public Task(String title, String date, String time,  long cost, String description) {
+    public Task(String title, String date, String time, int reward, String description, String id) {
         this.title = title;
         this.date = date;
         this.time = time;
-        this.cost = cost;
+        this.reward = reward;
         this.description = description;
+        this.id = id;
+    }
+
+    public Task(String title, String description, int reward) {
+        this.title = title;
+        this.description = description;
+        this.reward = reward;
     }
 
     public String getTitle() {
@@ -33,12 +38,20 @@ public class Task {
         return time;
     }
 
-    public long getCost() {
-        return cost;
+    public int getReward() {
+        return reward;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getId() {
+        return id;
     }
 }
 

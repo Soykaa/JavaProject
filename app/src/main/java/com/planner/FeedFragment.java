@@ -34,7 +34,7 @@ public class FeedFragment extends Fragment {
     private View feedView;
     private RecyclerView recyclerView;
     private DatabaseReference userRef, databaseReference;
-    private Query doneTasksRef;
+    private Query completedTasksRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
     private static final String TAG = "Feed Fragment";
@@ -50,17 +50,17 @@ public class FeedFragment extends Fragment {
         currentUserId = mAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         userRef = databaseReference.child("users");
-        doneTasksRef = databaseReference.child("doneTasks").orderByChild("timestamp");
+        completedTasksRef = databaseReference.child("completedTasks").orderByChild("timestamp");
         return feedView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DoneTask>().setQuery(doneTasksRef, DoneTask.class).build();
-        FirebaseRecyclerAdapter<DoneTask, FeedFragment.tasksViewHolder> adapter = new FirebaseRecyclerAdapter<DoneTask, tasksViewHolder>(options) {
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<CompletedTask>().setQuery(completedTasksRef, CompletedTask.class).build();
+        FirebaseRecyclerAdapter<CompletedTask, FeedFragment.tasksViewHolder> adapter = new FirebaseRecyclerAdapter<CompletedTask, tasksViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull tasksViewHolder tasksViewHolder, int i, @NonNull DoneTask s) {
+            protected void onBindViewHolder(@NonNull tasksViewHolder tasksViewHolder, int i, @NonNull CompletedTask s) {
                 String userId = s.getOwner();
                 userRef.child(currentUserId).child("friends").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override

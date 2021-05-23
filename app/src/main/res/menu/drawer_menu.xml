@@ -19,6 +19,10 @@
         <item
             android:id="@+id/nav_new_task"
             android:title="New task" />
+        <item
+            android:id="@+id/nav_all_tasks"
+            android:title="All tasks" />
+
 
         <item
             android:id="@+id/nav_all_wishes"
@@ -29,8 +33,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sign_out"
-            android:title="Sign out" />¬
+            android:title="Sign out" />
     </group>
-
 
 </menu>
