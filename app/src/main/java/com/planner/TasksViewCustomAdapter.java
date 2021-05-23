@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -40,18 +39,14 @@ public class TasksViewCustomAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_task_view_layout, null);
+            view = inflater.inflate(R.layout.custom_list_view_layout, null);
         }
 
-        TextView tvContact= view.findViewById(R.id.tvContact);
+        TextView tvContact = view.findViewById(R.id.tvContact);
         Task t = taskList.get(position);
         String text = t.getTitle() + "\n\nReward: " + t.getReward() + "\nDeadline: " + t.getDate() + " " + t.getTime();
         tvContact.setText(text);
-        ImageView imageSetStatus = view.findViewById(R.id.imageTaskStatus);
 
-//        imageSetStatus.setOnClickListener(v -> {
-//
-//        });
         return view;
     }
 }

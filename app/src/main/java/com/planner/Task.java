@@ -4,19 +4,26 @@ public class Task {
     private String title;
     private String date;
     private String time;
-    private long reward;
+    private int reward;
     private String description;
     private boolean isDone;
 
     public Task() {};
 
-    public Task(String title, String date, String time, long reward, String description) {
+    public Task(String title, String date, String time, int reward, String description) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.reward = reward;
         this.description = description;
         isDone = false;
+    }
+
+    public Task(String title, String description, int reward) {
+        this.title = title;
+        this.description = description;
+        this.reward = reward;
+        isDone = true;
     }
 
     public String getTitle() {
@@ -31,7 +38,7 @@ public class Task {
         return time;
     }
 
-    public long getReward() {
+    public int getReward() {
         return reward;
     }
 

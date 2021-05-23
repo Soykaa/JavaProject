@@ -1,5 +1,6 @@
 package com.planner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ViewTasksActivity extends AppCompatActivity {
+    private ArrayList<Task> tasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,7 @@ public class ViewTasksActivity extends AppCompatActivity {
 
         imageBack.setOnClickListener(v -> onBackPressed());
 
-        ArrayList<Task> tasks = new ArrayList<>();
+        tasks = new ArrayList<>();
         TasksViewCustomAdapter taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("tasks");
@@ -39,7 +41,7 @@ public class ViewTasksActivity extends AppCompatActivity {
 
                 for (DataSnapshot s : snapshot.getChildren()) {
                     Task t = s.getValue(Task.class);
-                    if (t != null) {
+                    if (t != null && !t.isDone()) {
                         tasks.add(t);
                     }
                 }
@@ -51,5 +53,31 @@ public class ViewTasksActivity extends AppCompatActivity {
 
             }
         });
+        taskListView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(view.getContext(), SetTaskCompletedActivity.class);
+            intent.putExtra("title", tasks.get(position).getTitle());
+            intent.putExtra("reward", tasks.get(position).getReward());
+            intent.putExtra("desc", tasks.get(position).getDescription());
+            // потом нужно добавить удаление, чтобы в результате уже все норм обработать и закинуть в список тасок
+            tasks.remove(position);
+            startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED) {
+                boolean isOk = data.getBooleanExtra("isOk", false);
+                if (isOk) {
+                    String title = data.getStringExtra("title");
+                    String desc = data.getStringExtra("desc");
+                    int reward = data.getIntExtra("reward", 0);
+                    Task tmp = new Task(title, desc, reward);
+                    tasks.add(tmp);
+                }
+            }
+        }
     }
 }

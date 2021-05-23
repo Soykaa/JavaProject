@@ -96,7 +96,7 @@ public class NewTaskActivity extends AppCompatActivity
             Task task = new Task(title.getText().toString(),
                                  dateDeadline.getText().toString(),
                                  timeDeadline.getText().toString(),
-                                 Long.parseLong(reward.getText().toString()),
+                                 Integer.parseInt(reward.getText().toString()),
                                  description.getText().toString());
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             DatabaseReference taskRef = database.child("tasks").push();

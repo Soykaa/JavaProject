@@ -29,7 +29,7 @@ public class ViewWishesActivity extends AppCompatActivity {
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
-                new Intent(getApplicationContext(), NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
+                new Intent(this, NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
         ArrayList<Wish> wishes = new ArrayList<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

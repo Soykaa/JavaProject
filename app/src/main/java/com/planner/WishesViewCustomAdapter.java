@@ -45,7 +45,7 @@ public class WishesViewCustomAdapter extends BaseAdapter implements ListAdapter 
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_wish_view_layout, null);
+            view = inflater.inflate(R.layout.custom_list_view_layout, null);
         }
 
         TextView tvContact= view.findViewById(R.id.tvContact);
