@@ -41,8 +41,11 @@ public class ViewTasksActivity extends AppCompatActivity {
 
                 for (DataSnapshot s : snapshot.getChildren()) {
                     Task t = s.getValue(Task.class);
-                    if (t != null && !t.isDone()) {
+                    if (t != null && t.getTitle() != null && !t.isDone()) {
                         tasks.add(t);
+                    }
+                    if (t == null || t.getTitle() == null) {
+                        s.getRef().removeValue();
                     }
                 }
                 taskAdapter.notifyDataSetChanged();
@@ -58,8 +61,7 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("title", tasks.get(position).getTitle());
             intent.putExtra("reward", tasks.get(position).getReward());
             intent.putExtra("desc", tasks.get(position).getDescription());
-            // потом нужно добавить удаление, чтобы в результате уже все норм обработать и закинуть в список тасок
-            tasks.remove(position);
+            tasks.get(position).setTitle(null);
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
         });
     }

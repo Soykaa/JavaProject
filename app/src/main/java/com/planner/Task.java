@@ -53,5 +53,9 @@ public class Task {
     public boolean isDone() {
         return isDone;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
 
