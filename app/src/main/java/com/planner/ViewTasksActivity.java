@@ -38,10 +38,13 @@ public class ViewTasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks);
 
+        ImageView imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
         ImageView imageBack = findViewById(R.id.imageBackAllTasks);
 
         imageBack.setOnClickListener(v -> onBackPressed());
+        imageAddWish.setOnClickListener(v -> startActivityForResult(
+                new Intent(this, NewTaskActivity.class), RequestCodes.REQUEST_CODE_ADD_TASK));
 
         tasks = new ArrayList<>();
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
