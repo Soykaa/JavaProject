@@ -3,6 +3,7 @@ package com.planner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,15 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         desc = getIntent().getStringExtra("desc");
         reward = getIntent().getIntExtra("reward", 0);
         pos = getIntent().getIntExtra("pos", 0);
+
+        TextView taskTitle = findViewById(R.id.titleTask);
+        taskTitle.setText(title);
+
+        TextView taskDesc = findViewById(R.id.descTask);
+        taskDesc.setText(desc);
+
+        TextView taskReward = findViewById(R.id.rewardTask);
+        taskReward.setText("reward: " + reward);
 
 
         imageBack.setOnClickListener(v -> onBackPressed());
