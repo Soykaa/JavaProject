@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity {
                 if (!dataSnapshot.exists()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     String userid = user.getUid();
-                    userNameRef.child(userid).setValue(new User(account.getDisplayName(), account.getPhotoUrl().toString()));
+                    userNameRef.child(userid).setValue(new User(account.getDisplayName(), account.getPhotoUrl().toString(), 0));
                 }
             }
 
