@@ -38,27 +38,32 @@ public class ViewTasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks);
 
+        ImageView imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
         ImageView imageBack = findViewById(R.id.imageBackAllTasks);
 
         imageBack.setOnClickListener(v -> onBackPressed());
+        imageAddWish.setOnClickListener(v -> startActivityForResult(
+                new Intent(this, NewTaskActivity.class), RequestCodes.REQUEST_CODE_ADD_TASK));
 
         tasks = new ArrayList<>();
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("tasks");
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = mAuth.getCurrentUser().getUid();
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();
 
-                for (DataSnapshot s : snapshot.getChildren()) {
-                    Task t = s.getValue(Task.class);
+                for (DataSnapshot s : snapshot.child("users").child(currentUserID).child("taskIDs").getChildren()) {
+                    String taskID = s.getValue(String.class);
+                    Task t = snapshot.child("tasks").child(taskID).getValue(Task.class);
                     if (t != null) {
                         tasks.add(t);
-                    }
-                    if (t == null) {
+                    } else {
                         s.getRef().removeValue();
                     }
                 }

@@ -102,9 +102,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_sign_out:
                 logOut();
                 break;
-            case R.id.nav_new_task:
-                createTask();
-                break;
             case R.id.nav_all_tasks:
                 viewAllTasks();
                 break;
@@ -137,11 +134,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void friends() {
         Intent intent = new Intent(this, FriendActivity.class);
-        startActivity(intent);
-    }
-
-    private void createTask() {
-        Intent intent = new Intent(this, NewTaskActivity.class);
         startActivity(intent);
     }
 
