@@ -48,7 +48,7 @@ public class WishesViewCustomAdapter extends BaseAdapter implements ListAdapter 
             view = inflater.inflate(R.layout.custom_list_view_layout, null);
         }
 
-        TextView tvContact= view.findViewById(R.id.tvContact);
+        TextView tvContact = view.findViewById(R.id.tvContact);
         Wish w = wishList.get(position);
         String text = Objects.requireNonNull(w).getTitle() + "\n\nPrice: " + w.getCost();
         tvContact.setText(text);

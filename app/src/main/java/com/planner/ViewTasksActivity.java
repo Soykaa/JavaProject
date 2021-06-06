@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class ViewTasksActivity extends AppCompatActivity {
     private ArrayList<Task> tasks;
     private TasksViewCustomAdapter taskAdapter;
+    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     private void makeCompleted(int position, Task tmp) {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference taskRef = database.child("completedTasks").push();
         taskRef.setValue(tmp);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -49,11 +49,10 @@ public class ViewTasksActivity extends AppCompatActivity {
         tasks = new ArrayList<>();
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String currentUserID = mAuth.getCurrentUser().getUid();
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();

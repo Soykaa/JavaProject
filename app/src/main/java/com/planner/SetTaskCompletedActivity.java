@@ -10,19 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
 
 public class SetTaskCompletedActivity extends AppCompatActivity {
     private String title;
@@ -91,21 +85,13 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         if (fileImageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis()
             + "." + getFileExtension(fileImageUri));
-            fileReference.putFile(fileImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                    UploadFile upload = new UploadFile("picture", taskSnapshot.getMetadata()
-                            .getReference().getDownloadUrl().toString());
-                    String uploadId = databaseReference.push().getKey();
-                    databaseReference.child(uploadId).setValue(upload);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull @NotNull Exception e) {
-                    Toast.makeText(SetTaskCompletedActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            fileReference.putFile(fileImageUri).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                UploadFile upload = new UploadFile("picture", taskSnapshot.getMetadata()
+                        .getReference().getDownloadUrl().toString());
+                String uploadId = databaseReference.push().getKey();
+                databaseReference.child(uploadId).setValue(upload);
+            }).addOnFailureListener(e -> Toast.makeText(SetTaskCompletedActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }

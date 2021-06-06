@@ -18,6 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ViewWishesActivity extends AppCompatActivity {
+    private ArrayList<Wish> wishes;
+    private WishesViewCustomAdapter wishAdapter;
+    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +35,13 @@ public class ViewWishesActivity extends AppCompatActivity {
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(this, NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
-        ArrayList<Wish> wishes = new ArrayList<>();
+        wishes = new ArrayList<>();
+        wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        WishesViewCustomAdapter wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
         wishListView.setAdapter(wishAdapter);
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         String currentUserID = mAuth.getCurrentUser().getUid();
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 wishes.clear();

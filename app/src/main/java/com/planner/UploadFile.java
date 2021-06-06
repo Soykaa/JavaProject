@@ -5,7 +5,6 @@ public class UploadFile {
     private String fileUrl;
 
     public UploadFile() {
-
     }
 
     public UploadFile(String fileName, String fileUrl) {
