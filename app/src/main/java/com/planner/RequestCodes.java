@@ -7,4 +7,5 @@ public final class RequestCodes {
     public static final int REQUEST_CODE_SET_TASK_COMPLETED = 2;
     public static final int REQUEST_CODE_ADD_TASK = 3;
     public static final int REQUEST_CODE_SET_WISH_COMPLETED = 4;
+    public static final int REQUEST_CODE_ADD_IMAGE = 5;
 }
