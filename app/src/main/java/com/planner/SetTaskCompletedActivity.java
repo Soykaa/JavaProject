@@ -29,6 +29,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String desc;
     private int reward;
     private int pos;
+    private long timestamp;
     private Uri fileImageUri;
     private ImageView imageFile;
     private StorageReference storageReference;
@@ -42,6 +43,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         ImageView imageBack = findViewById(R.id.imageBackSetTaskCompleted);
         imageFile = findViewById(R.id.imageFile);
         Button chooseImageButton = findViewById(R.id.chooseFileButton);
+
+
 
         title = getIntent().getStringExtra("title");
         desc = getIntent().getStringExtra("desc");
@@ -90,7 +93,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private void uploadFile() {
         if (fileImageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-            + "." + getFileExtension(fileImageUri));
+                    + "." + getFileExtension(fileImageUri));
             fileReference.putFile(fileImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
