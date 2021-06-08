@@ -27,7 +27,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_wish_completed);
-        ImageView imageSetTaskCompleted = findViewById(R.id.imageChangeStatusWish);
+        ImageView imageSetWishCompleted = findViewById(R.id.imageChangeStatusWish);
         ImageView imageBack = findViewById(R.id.imageBackSetWishCompleted);
 
         title = getIntent().getStringExtra("title");
@@ -44,24 +44,43 @@ public class SetWishCompletedActivity extends AppCompatActivity {
         TextView wishCost = findViewById(R.id.costWish);
         wishCost.setText("cost: " + cost);
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String userID = mAuth.getCurrentUser().getUid();
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(userID)
+                .child("points");
+        final Long[] points = new Long[1];
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                points[0] = snapshot.getValue(Long.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {}
+        });
 
         imageBack.setOnClickListener(v -> onBackPressed());
-        imageSetTaskCompleted.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra("isOk", true);
-            intent.putExtra("title", title);
-            intent.putExtra("desc", desc);
-            intent.putExtra("cost", cost);
-            intent.putExtra("pos", pos);
-            setResult(RESULT_OK, intent);
-
-            addRewardPoints(cost);
-
-            finish();
+        imageSetWishCompleted.setOnClickListener(v -> {
+           if (points[0] >= cost) {
+                Intent intent = new Intent();
+                intent.putExtra("isOk", true);
+                intent.putExtra("title", title);
+                intent.putExtra("desc", desc);
+                intent.putExtra("cost", cost);
+                intent.putExtra("pos", pos);
+                setResult(RESULT_OK, intent);
+                substractCostPoints(cost);
+                finish();
+            }
+            else {
+                wishCost.setError("You don't have enough points");
+            }
         });
     }
 
-    private void addRewardPoints(int reward) {
+    private void substractCostPoints(int cost) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String userID = mAuth.getCurrentUser().getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
@@ -72,12 +91,11 @@ public class SetWishCompletedActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 Long points = snapshot.getValue(Long.class);
-                databaseRef.setValue(points - reward);
+                databaseRef.setValue(points - cost);
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {}
         });
     }
 }
