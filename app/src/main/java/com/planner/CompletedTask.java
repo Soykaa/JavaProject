@@ -1,38 +1,22 @@
 package com.planner;
 
-import android.util.Log;
-
-import com.google.firebase.database.Exclude;
-
-import java.util.Map;
-
 public class CompletedTask {
-    private String id;
     private String owner;
-    private Object timestamp;
+    private Long timestamp;
 
-    public CompletedTask() {}
-  
-    public CompletedTask(String id, String owner, Object timestamp) {
-        this.id = id;
+    public CompletedTask() { }
+
+
+    public CompletedTask(String owner, Long timestamp) {
         this.owner = owner;
         this.timestamp = timestamp;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getOwner() {
         return owner;
     }
 
-    public Map<String, String> getTimestamp() {
-        return (Map<String, String>) timestamp;
-    }
-
-    @Exclude
-    public Long getTimestampLong() {
-        return (Long) timestamp;
+    public Long getTimestamp() {
+        return timestamp;
     }
 }

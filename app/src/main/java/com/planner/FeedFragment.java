@@ -50,7 +50,7 @@ public class FeedFragment extends Fragment {
         currentUserId = mAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         userRef = databaseReference.child("users");
-        completedTasksRef = databaseReference.child("completedTasks").orderByChild("timestamp");
+        completedTasksRef = databaseReference.child("doneTasks").orderByChild("timestamp");
         return feedView;
     }
 
