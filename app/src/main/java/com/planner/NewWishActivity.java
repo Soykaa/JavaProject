@@ -59,7 +59,7 @@ public class NewWishActivity extends AppCompatActivity {
 
             DatabaseReference wishRef = database.child("wishes").push();
             Wish wish = new Wish(title.getText().toString(),
-                    cost.getText().toString(),
+                    Integer.parseInt(cost.getText().toString()),
                     description.getText().toString(), wishRef.getKey());
             wishRef.setValue(wish);
 

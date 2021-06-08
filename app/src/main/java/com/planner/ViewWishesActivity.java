@@ -18,6 +18,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ViewWishesActivity extends AppCompatActivity {
+    ArrayList<Wish> wishes;
+    WishesViewCustomAdapter wishAdapter;
+
+    private void makeArchived(int position, Wish tmp) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference wishRef = database.child("archivedWishes").push();
+        wishRef.setValue(tmp);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = mAuth.getCurrentUser().getUid();
+        database.child("users").child(currentUserID).child("archivedWishesIDs").push().setValue(wishRef.getKey());
+        DatabaseReference databaseReference = database.child("wishes").child(wishes.get(position).getId());
+        databaseReference.removeValue();
+        wishAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +46,9 @@ public class ViewWishesActivity extends AppCompatActivity {
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(this, NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
-        ArrayList<Wish> wishes = new ArrayList<>();
+        wishes = new ArrayList<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        WishesViewCustomAdapter wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
+        wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
         wishListView.setAdapter(wishAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         String currentUserID = mAuth.getCurrentUser().getUid();
@@ -59,5 +74,35 @@ public class ViewWishesActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+        wishListView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(view.getContext(), SetWishCompletedActivity.class);
+            Wish wish = wishes.get(position);
+            intent.putExtra("title", wish.getTitle());
+            intent.putExtra("cost", wish.getCost());
+            intent.putExtra("desc", wish.getDescription());
+            intent.putExtra("pos", position);
+            wishAdapter.notifyDataSetChanged();
+            startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_WISH_COMPLETED);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RequestCodes.REQUEST_CODE_SET_WISH_COMPLETED) {
+                boolean isOk = data.getBooleanExtra("isOk", false);
+                if (isOk) {
+                    String title = data.getStringExtra("title");
+                    String desc = data.getStringExtra("desc");
+                    int cost = data.getIntExtra("cost", 0);
+                    int position = data.getIntExtra("pos", -1);
+                    Wish tmp = new Wish(title,cost, desc, "");
+                    makeArchived(position, tmp);
+                }
+            }
+        }
     }
 }
+

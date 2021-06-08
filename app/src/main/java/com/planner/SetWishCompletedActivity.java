@@ -17,33 +17,32 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-public class SetTaskCompletedActivity extends AppCompatActivity {
+public class SetWishCompletedActivity extends AppCompatActivity {
     private String title;
     private String desc;
-    private int reward;
+    private int cost;
     private int pos;
-    private boolean activityRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_task_completed);
-        ImageView imageSetTaskCompleted = findViewById(R.id.imageChangeStatusTask);
-        ImageView imageBack = findViewById(R.id.imageBackSetTaskCompleted);
+        setContentView(R.layout.activity_set_wish_completed);
+        ImageView imageSetTaskCompleted = findViewById(R.id.imageChangeStatusWish);
+        ImageView imageBack = findViewById(R.id.imageBackSetWishCompleted);
 
         title = getIntent().getStringExtra("title");
         desc = getIntent().getStringExtra("desc");
-        reward = getIntent().getIntExtra("reward", 0);
+        cost = getIntent().getIntExtra("cost", 0);
         pos = getIntent().getIntExtra("pos", 0);
 
-        TextView taskTitle = findViewById(R.id.titleTask);
-        taskTitle.setText(title);
+        TextView wishTitle = findViewById(R.id.titleWish);
+        wishTitle.setText(title);
 
-        TextView taskDesc = findViewById(R.id.descTask);
-        taskDesc.setText(desc);
+        TextView wishDesc = findViewById(R.id.descWish);
+        wishDesc.setText(desc);
 
-        TextView taskReward = findViewById(R.id.rewardTask);
-        taskReward.setText("reward: " + reward);
+        TextView wishCost = findViewById(R.id.costWish);
+        wishCost.setText("cost: " + cost);
 
 
         imageBack.setOnClickListener(v -> onBackPressed());
@@ -52,11 +51,11 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("isOk", true);
             intent.putExtra("title", title);
             intent.putExtra("desc", desc);
-            intent.putExtra("reward", reward);
+            intent.putExtra("cost", cost);
             intent.putExtra("pos", pos);
             setResult(RESULT_OK, intent);
 
-            addRewardPoints(reward);
+            addRewardPoints(cost);
 
             finish();
         });
@@ -66,14 +65,14 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String userID = mAuth.getCurrentUser().getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
-                                        .child("users")
-                                        .child(userID)
-                                        .child("points");
+                .child("users")
+                .child(userID)
+                .child("points");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 Long points = snapshot.getValue(Long.class);
-                databaseRef.setValue(points + reward);
+                databaseRef.setValue(points - reward);
             }
 
             @Override
