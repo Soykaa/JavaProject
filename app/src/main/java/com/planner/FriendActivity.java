@@ -33,12 +33,7 @@ public class FriendActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
+        fab.setOnClickListener(view -> openDialog());
     }
 
     private void openDialog() {

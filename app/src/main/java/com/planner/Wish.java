@@ -2,25 +2,31 @@ package com.planner;
 
 public class Wish {
     private String title;
-    private String cost;
+    private int cost;
     private String description;
     private String id;
 
     // must-have for database correct work!
     public Wish() {}
 
-    public Wish(String title, String cost, String description, String id) {
+    public Wish(String title, int cost, String description, String id) {
         this.title = title;
         this.cost = cost;
         this.description = description;
         this.id = id;
     }
 
+    public Wish(String title, int cost, String description) {
+        this.title = title;
+        this.cost = cost;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }
 
-    public String getCost() {
+    public int getCost() {
         return cost;
     }
 
@@ -36,7 +42,7 @@ public class Wish {
         this.title = title;
     }
 
-    public void setCost(String cost) {
+    public void setCost(int cost) {
         this.cost = cost;
     }
 

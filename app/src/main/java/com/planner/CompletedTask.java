@@ -4,7 +4,6 @@ public class CompletedTask {
     private String owner;
     private Long timestamp;
 
-
     public CompletedTask() { }
 
 

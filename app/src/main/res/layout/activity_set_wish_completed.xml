@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetTaskCompletedActivity">
+    tools:context=".SetWishCompletedActivity">
 
     <ImageView
-        android:id="@+id/imageChangeStatusTask"
+        android:id="@+id/imageChangeStatusWish"
 
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="315dp"
-        android:layout_marginLeft="315dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="352dp"
+        android:layout_marginLeft="352dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/background_done_button"
         android:contentDescription="@string/app_name"
         android:padding="5dp"
@@ -26,7 +26,7 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:id="@+id/imageBackSetTaskCompleted"
+        android:id="@+id/imageBackSetWishCompleted"
 
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -43,13 +43,13 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/titleTask"
+        android:id="@+id/titleWish"
 
         android:layout_width="390dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="116dp"
         android:background="@null"
         android:includeFontPadding="false"
         android:textColor="@color/black"
@@ -58,17 +58,17 @@
         android:textStyle="bold"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/rewardTask"
+        android:id="@+id/costWish"
 
-        android:layout_width="390dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="150dp"
+        style="@android:style/Widget.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="172dp"
         android:background="@null"
         android:includeFontPadding="false"
         android:textColor="@color/black"
@@ -76,35 +76,33 @@
         android:textSize="20sp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/descWord"
+        android:id="@+id/descriptionWord"
 
-        android:layout_width="390dp"
-        android:layout_height="30dp"
+        android:layout_width="376dp"
+        android:layout_height="34dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="300dp"
         android:background="@null"
         android:includeFontPadding="false"
+        android:text="Description:"
         android:textColor="@color/black"
         android:textSize="30sp"
-        android:text="Description:"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/descTask"
+        android:id="@+id/descWish"
 
         android:layout_width="390dp"
         android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="340dp"
         android:background="@null"
         android:includeFontPadding="false"
@@ -112,37 +110,7 @@
         android:textSize="20sp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/chooseFileButton"
-        android:layout_width="120sp"
-        android:layout_height="50sp"
-        android:text="Choose file"
-        android:layout_marginStart="18sp"
-        android:layout_marginLeft="18sp"
-        android:layout_marginTop="210dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </Button>
-
-    <TextView
-        android:id="@+id/filename"
-        android:layout_width="220dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="225dp"
-        android:background="@null"
-        android:includeFontPadding="false"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp"
-        android:text="filename"
-        android:textStyle="italic"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
