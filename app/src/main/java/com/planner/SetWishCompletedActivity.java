@@ -27,7 +27,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_wish_completed);
-        ImageView imageSetTaskCompleted = findViewById(R.id.imageChangeStatusWish);
+        ImageView imageSetWishCompleted = findViewById(R.id.imageChangeStatusWish);
         ImageView imageBack = findViewById(R.id.imageBackSetWishCompleted);
 
         title = getIntent().getStringExtra("title");
@@ -44,9 +44,8 @@ public class SetWishCompletedActivity extends AppCompatActivity {
         TextView wishCost = findViewById(R.id.costWish);
         wishCost.setText("cost: " + cost);
 
-
         imageBack.setOnClickListener(v -> onBackPressed());
-        imageSetTaskCompleted.setOnClickListener(v -> {
+        imageSetWishCompleted.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("isOk", true);
             intent.putExtra("title", title);
