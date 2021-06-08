@@ -4,16 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -41,6 +45,8 @@ public class ViewWishesActivity extends AppCompatActivity {
         ImageView imageAddWish = findViewById(R.id.imageAdd);
         ListView wishListView = findViewById(R.id.wishesListView);
         ImageView imageBack = findViewById(R.id.imageBackAllWishes);
+        TextView textPoints = findViewById(R.id.textPoints);
+        ;
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
@@ -52,6 +58,7 @@ public class ViewWishesActivity extends AppCompatActivity {
         wishListView.setAdapter(wishAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         String currentUserID = mAuth.getCurrentUser().getUid();
+
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +92,25 @@ public class ViewWishesActivity extends AppCompatActivity {
             wishAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_WISH_COMPLETED);
         });
+
+        DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(currentUserID)
+                .child("points");
+
+        pointsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Long points = snapshot.getValue(Long.class);
+                textPoints.setText(points.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
