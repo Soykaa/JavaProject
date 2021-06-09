@@ -60,7 +60,7 @@
             app:tint="@color/white" />
 
         <EditText
-            android:id="@+id/inputSearch"
+            android:id="@+id/inputSearchWishes"
             android:layout_width="match_parent"
             android:layout_height="35sp"
             android:hint="Search wishes"

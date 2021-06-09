@@ -2,6 +2,9 @@ package com.planner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,7 +48,7 @@ public class ViewWishesActivity extends AppCompatActivity {
         ListView wishListView = findViewById(R.id.wishesListView);
         ImageView imageBack = findViewById(R.id.imageBackAllWishes);
         TextView textPoints = findViewById(R.id.textPoints);
-        ;
+        EditText wishesSearch = findViewById(R.id.inputSearchWishes);
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
@@ -82,6 +85,7 @@ public class ViewWishesActivity extends AppCompatActivity {
         });
 
         wishListView.setOnItemClickListener((parent, view, position, id) -> {
+            wishes = wishAdapter.getFilteredWishList();
             Intent intent = new Intent(view.getContext(), SetWishCompletedActivity.class);
             Wish wish = wishes.get(position);
             intent.putExtra("title", wish.getTitle());
@@ -109,7 +113,21 @@ public class ViewWishesActivity extends AppCompatActivity {
 
             }
         });
+        wishesSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                (ViewWishesActivity.this).wishAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     @Override

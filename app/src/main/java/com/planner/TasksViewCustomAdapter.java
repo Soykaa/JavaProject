@@ -92,6 +92,5 @@ public class TasksViewCustomAdapter extends BaseAdapter implements ListAdapter {
             filteredTaskList = (ArrayList<Task>) results.values;
             notifyDataSetChanged();
         }
-
     }
 }
