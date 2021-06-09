@@ -2,6 +2,9 @@ package com.planner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -20,9 +23,9 @@ import java.util.ArrayList;
 public class ViewTasksActivity extends AppCompatActivity {
     private ArrayList<Task> tasks;
     private TasksViewCustomAdapter taskAdapter;
-    private final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     private void makeCompleted(int position, Task tmp) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference taskRef = database.child("completedTasks").push();
         taskRef.setValue(tmp);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -41,6 +44,7 @@ public class ViewTasksActivity extends AppCompatActivity {
         ImageView imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
         ImageView imageBack = findViewById(R.id.imageBackAllTasks);
+        EditText tasksSearch = findViewById(R.id.inputSearchTasks);
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
@@ -49,10 +53,11 @@ public class ViewTasksActivity extends AppCompatActivity {
         tasks = new ArrayList<>();
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String currentUserID = mAuth.getCurrentUser().getUid();
 
-        database.addValueEventListener(new ValueEventListener() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();
@@ -75,6 +80,7 @@ public class ViewTasksActivity extends AppCompatActivity {
             }
         });
         taskListView.setOnItemClickListener((parent, view, position, id) -> {
+            tasks = taskAdapter.getFilteredTaskList();
             Intent intent = new Intent(view.getContext(), SetTaskCompletedActivity.class);
             intent.putExtra("title", tasks.get(position).getTitle());
             intent.putExtra("reward", tasks.get(position).getReward());
@@ -82,6 +88,21 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("pos", position);
             taskAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
+        });
+        tasksSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                (ViewTasksActivity.this).taskAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
