@@ -6,8 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +60,16 @@ public class TasksViewCustomAdapter extends BaseAdapter implements ListAdapter {
         Task t = filteredTaskList.get(position);
         String text = t.getTitle() + "\n\nReward: " + t.getReward() + "\nDeadline: " + t.getDate() + " " + t.getTime();
         tvContact.setText(text);
+
+        ImageView imageDelete = view.findViewById(R.id.deleteImage);
+
+        imageDelete.setOnClickListener(v -> {
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference databaseReference = database.child("tasks")
+                    .child(filteredTaskList.get(position).getId());
+            databaseReference.removeValue();
+            Toast.makeText(context, "Task is deleted", Toast.LENGTH_LONG).show();
+        });
 
         return view;
     }
