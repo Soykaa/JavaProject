@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,6 +17,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -23,23 +26,38 @@ import java.util.ArrayList;
 public class ViewTasksActivity extends AppCompatActivity {
     private ArrayList<Task> tasks;
     private TasksViewCustomAdapter taskAdapter;
+    private String currentUserID;
+    private static final String TAG = "ViewTasksActivity";
 
-    private void makeCompleted(int position, Task tmp) {
+    private void makeCompleted(int position, CompletedTask tmp) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference taskRef = database.child("completedTasks").push();
-        taskRef.setValue(tmp);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserID = mAuth.getCurrentUser().getUid();
-        database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(taskRef.getKey());
-        DatabaseReference databaseReference = database.child("tasks").child(tasks.get(position).getId());
-        databaseReference.removeValue();
+        database.child("completedTasks").child(tmp.getId()).setValue(tmp);
+        database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
+        Query tasksQuery = database.child("users").child(currentUserID).child("taskIDs").orderByValue().equalTo(tmp.getId());
+        tasksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e(TAG, "enter remove " + dataSnapshot.toString());
+                for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
+                    Log.e(TAG, "remove " + taskSnapshot.toString());
+                    taskSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
         taskAdapter.notifyDataSetChanged();
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
 
         ImageView imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
@@ -54,8 +72,6 @@ public class ViewTasksActivity extends AppCompatActivity {
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserID = mAuth.getCurrentUser().getUid();
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -113,11 +129,8 @@ public class ViewTasksActivity extends AppCompatActivity {
             if (requestCode == RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED) {
                 boolean isOk = data.getBooleanExtra("isOk", false);
                 if (isOk) {
-                    String title = data.getStringExtra("title");
-                    String desc = data.getStringExtra("desc");
-                    int reward = data.getIntExtra("reward", 0);
                     int position = data.getIntExtra("pos", -1);
-                    Task tmp = new Task(title, desc, reward);
+                    CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP);
                     makeCompleted(position, tmp);
                 }
             }
