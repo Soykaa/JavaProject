@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,11 +35,12 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String desc;
     private int reward;
     private int pos;
-    private long timestamp;
     private Uri fileImageUri;
     private ImageView imageFile;
+    private String uploadId = null;
     private StorageReference storageReference;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseSReference;
+    private static final String TAG = "SetTaskCompleted";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
 
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        databaseSReference = FirebaseDatabase.getInstance().getReference("uploads");
 
         chooseImageButton.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -83,9 +86,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("reward", reward);
             intent.putExtra("pos", pos);
             setResult(RESULT_OK, intent);
-
+            uploadFile(intent);
             addRewardPoints(reward);
-
             finish();
         });
     }
@@ -96,7 +98,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadFile() {
+    private void uploadFile(Intent intent) {
         if (fileImageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtension(fileImageUri));
@@ -106,8 +108,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
                     Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                     UploadFile upload = new UploadFile("picture", taskSnapshot.getMetadata()
                             .getReference().getDownloadUrl().toString());
-                    String uploadId = databaseReference.push().getKey();
-                    databaseReference.child(uploadId).setValue(upload);
+                    uploadId = databaseSReference.push().getKey();
+                    databaseSReference.child(uploadId).setValue(upload);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

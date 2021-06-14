@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SetTaskCompletedActivity"></activity>
+        <activity android:name="com.planner.SignInActivity"
+            android:label="SignInActivity"/>
+        <activity android:name=".SetTaskCompletedActivity" />
         <activity
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend"
@@ -21,7 +23,6 @@
         <activity
             android:name=".NewTaskActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity android:name=".SignInActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

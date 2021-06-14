@@ -29,7 +29,7 @@ public class ViewTasksActivity extends AppCompatActivity {
     private String currentUserID;
     private static final String TAG = "ViewTasksActivity";
 
-    private void makeCompleted(int position, CompletedTask tmp) {
+    private void makeCompleted(CompletedTask tmp) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("completedTasks").child(tmp.getId()).setValue(tmp);
         database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
@@ -51,6 +51,7 @@ public class ViewTasksActivity extends AppCompatActivity {
         });
         taskAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +132,8 @@ public class ViewTasksActivity extends AppCompatActivity {
                 if (isOk) {
                     int position = data.getIntExtra("pos", -1);
                     CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP);
-                    makeCompleted(position, tmp);
+                    data.putExtra("taskId", tmp.getId());
+                    makeCompleted(tmp);
                 }
             }
         }

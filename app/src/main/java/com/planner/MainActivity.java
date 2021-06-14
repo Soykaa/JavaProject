@@ -3,6 +3,7 @@ package com.planner;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -27,18 +28,15 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
     protected DrawerLayout drawer;
-    private TextView name;
-    private ImageView image;
+    private static final String TAG = "Main Activity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
@@ -63,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_feed);
         }
 
-        name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
-        image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        TextView name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
+        ImageView image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null) {
             if (name != null) {
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void logOut() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut();
         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);

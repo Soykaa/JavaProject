@@ -10,7 +10,7 @@ public class CompletedTask {
     private String id;
     private String owner;
     private Object timestamp;
-
+    private String upload;
 
     public CompletedTask() {
     }
@@ -20,7 +20,16 @@ public class CompletedTask {
         this.id = id;
         this.owner = owner;
         this.timestamp = timestamp;
+        this.upload = null;
     }
+
+    public CompletedTask(String id, String owner, Object timestamp, String upload) {
+        this.id = id;
+        this.owner = owner;
+        this.timestamp = timestamp;
+        this.upload = upload;
+    }
+
 
     public String getId() {
         return id;
