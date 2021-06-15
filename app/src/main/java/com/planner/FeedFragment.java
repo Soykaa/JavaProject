@@ -50,7 +50,7 @@ public class FeedFragment extends Fragment {
         currentUserId = mAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         userRef = databaseReference.child("users");
-        doneTasksRef = databaseReference.child("doneTasks").orderByChild("timestamp");
+        doneTasksRef = databaseReference.child("completedTasks").orderByChild("timestamp");
         return feedView;
     }
 
@@ -66,6 +66,7 @@ public class FeedFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            tasksViewHolder.itemView.setVisibility(View.VISIBLE);
                             userRef.child(userId).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +102,7 @@ public class FeedFragment extends Fragment {
                                 }
                             });
                         } else {
+                            tasksViewHolder.itemView.setVisibility(View.GONE);
                             tasksViewHolder.itemView.getLayoutParams().height = 0;
                         }
                     }
