@@ -16,13 +16,17 @@
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewWishesActivity" />
-        <activity android:name=".ViewTasksActivity" />
-        <activity android:name=".NewWishActivity" />
+        <activity android:name=".ViewWishesActivity"
+            android:label="@string/wishes"/>
+        <activity android:name=".ViewTasksActivity"
+            android:label="@string/tasks"/>
+        <activity android:name=".NewWishActivity"
+            android:label="@string/add_new_wish"/>
         <activity android:name=".SetWishCompletedActivity" />
         <activity
             android:name=".NewTaskActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:label="@string/add_new_task"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

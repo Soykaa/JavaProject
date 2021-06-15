@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,7 +45,7 @@ public class ViewWishesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_wishes);
 
-        ImageView imageAddWish = findViewById(R.id.imageAdd);
+        FloatingActionButton imageAddWish = findViewById(R.id.imageAdd);
         ListView wishListView = findViewById(R.id.wishesListView);
         ImageView imageBack = findViewById(R.id.imageBackAllWishes);
         TextView textPoints = findViewById(R.id.textPoints);

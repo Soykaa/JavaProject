@@ -80,30 +80,13 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:id="@+id/setPublicityTask"
-
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="250dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_set_publicity"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black"
-
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
         android:id="@+id/setPriceTask"
 
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="285dp"
+        android:layout_marginTop="250dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_task_price"
 
@@ -148,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="320dp"
         android:background="@null"
         android:gravity="top"
         android:hint="Type task description here..."
@@ -182,23 +165,6 @@
         tools:ignore="MissingConstraints" />
 
 
-    <TextView
-        android:id="@+id/addresseTextTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="254dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:hint="Select an addresse"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        tools:ignore="MissingConstraints" />
-
-
     <EditText
         android:id="@+id/rewardTextTask"
 
@@ -206,7 +172,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="291dp"
+        android:layout_marginTop="256dp"
         android:background="@null"
         android:gravity="top"
         android:importantForAutofill="no"

@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_feed);
         }
 
+
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
         ImageView image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
