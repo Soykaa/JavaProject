@@ -30,6 +30,7 @@ public class ViewTasksActivity extends AppCompatActivity {
     private static final String TAG = "ViewTasksActivity";
 
     private void makeCompleted(CompletedTask tmp) {
+        Log.d(TAG, "makeCompleted");
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("completedTasks").child(tmp.getId()).setValue(tmp);
         database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
@@ -131,8 +132,8 @@ public class ViewTasksActivity extends AppCompatActivity {
                 boolean isOk = data.getBooleanExtra("isOk", false);
                 if (isOk) {
                     int position = data.getIntExtra("pos", -1);
-                    CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP);
-                    data.putExtra("taskId", tmp.getId());
+                    String uploadId = data.getStringExtra("uploadId");
+                    CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP, uploadId);
                     makeCompleted(tmp);
                 }
             }

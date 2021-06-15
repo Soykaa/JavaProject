@@ -76,7 +76,6 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_ADD_IMAGE);
         });
 
-
         imageBack.setOnClickListener(v -> onBackPressed());
         imageSetTaskCompleted.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -85,10 +84,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
             intent.putExtra("pos", pos);
-            setResult(RESULT_OK, intent);
-            uploadFile(intent);
             addRewardPoints(reward);
-            finish();
+            uploadFile(intent);
         });
     }
 
@@ -110,6 +107,9 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
                             .getReference().getDownloadUrl().toString());
                     uploadId = databaseSReference.push().getKey();
                     databaseSReference.child(uploadId).setValue(upload);
+                    intent.putExtra("uploadId", uploadId);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -119,6 +119,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 
