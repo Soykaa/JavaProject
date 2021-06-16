@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,38 +23,47 @@ import java.util.Calendar;
 
 public class NewTaskActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    private static final String TAG = "NewTaskActivity";
+
+
     private boolean inputIsCorrect(EditText title, EditText reward, EditText desc, TextView date, TextView time) {
+        boolean flag = true;
         if (TextUtils.isEmpty(title.getText().toString())) {
             title.setError("You did not enter a title");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(reward.getText().toString())) {
-            reward.setError("You did not enter a reward");
-            return false;
-        }
-
-        if (Integer.parseInt(reward.getText().toString()) < 20) {
-            reward.setError("Cost is too small");
-            return false;
+            flag = false;
+            Log.d(TAG, "not title");
         }
 
         if (TextUtils.isEmpty(desc.getText().toString())) {
             desc.setError("You did not enter a description");
-            return false;
+            Log.d(TAG, "no description");
+            flag = false;
         }
 
         if (TextUtils.isEmpty(date.getText().toString())) {
             date.setError("You did not enter a deadline date");
-            return false;
+            Log.d(TAG, "no dedline");
+            flag = false;
         }
 
         if (TextUtils.isEmpty(time.getText().toString())) {
             time.setError("You did not enter a deadline time");
-            return false;
+            Log.d(TAG, "not time");
+            flag = false;
         }
 
-        return true;
+        if (TextUtils.isEmpty(reward.getText().toString())) {
+            reward.setError("You did not enter a reward");
+            flag = false;
+            Log.d(TAG, "not reward");
+        } else if (Integer.parseInt(reward.getText().toString()) < 20) {
+            reward.setError("Cost is too small");
+            Log.d(TAG, "not cost");
+            flag = false;
+        }
+
+
+        return flag;
     }
 
     @Override

@@ -13,26 +13,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class NewWishActivity extends AppCompatActivity {
     private boolean inputIsCorrect(EditText title, EditText cost, EditText desc) {
+        boolean flag = true;
         if (TextUtils.isEmpty(title.getText().toString())) {
             title.setError("You did not enter a title");
-            return false;
+            flag = false;
         }
 
         if (TextUtils.isEmpty(cost.getText().toString())) {
             cost.setError("You did not enter a cost");
-            return false;
-        }
-
-        if (Integer.parseInt(cost.getText().toString()) < 20) {
-            cost.setError("Cost is too small");
-            return false;
+            flag = false;
+        } else {
+            if (Integer.parseInt(cost.getText().toString()) < 20) {
+                cost.setError("Cost is too small");
+                flag = false;
+            }
         }
 
         if (TextUtils.isEmpty(desc.getText().toString())) {
             desc.setError("You did not enter a description");
-            return false;
+            flag = false;
         }
-        return true;
+        return flag;
     }
 
     @Override
