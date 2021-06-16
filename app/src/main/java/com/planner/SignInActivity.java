@@ -119,17 +119,14 @@ public class SignInActivity extends AppCompatActivity {
 
 
     private void addUser(GoogleSignInAccount account) {
-        Log.d(TAG, "addUser");
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userNameRef = rootRef.child("users");
-        Query queries = userNameRef.orderByChild("name").equalTo(account.getDisplayName());
+        Query queries = PlannerCostants.userRef.orderByChild("name").equalTo(account.getDisplayName());
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     String userid = user.getUid();
-                    userNameRef.child(userid).setValue(new User(account.getDisplayName(), account.getPhotoUrl().toString(), 0));
+                    PlannerCostants.userRef.child(userid).setValue(new User(account.getDisplayName(), account.getPhotoUrl().toString(), 0));
                 }
             }
 

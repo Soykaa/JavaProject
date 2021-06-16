@@ -13,26 +13,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class NewWishActivity extends AppCompatActivity {
     private boolean inputIsCorrect(EditText title, EditText cost, EditText desc) {
+        boolean flag = true;
         if (TextUtils.isEmpty(title.getText().toString())) {
             title.setError("You did not enter a title");
-            return false;
+            flag = false;
         }
 
         if (TextUtils.isEmpty(cost.getText().toString())) {
             cost.setError("You did not enter a cost");
-            return false;
-        }
-
-        if (Integer.parseInt(cost.getText().toString()) < 20) {
-            cost.setError("Cost is too small");
-            return false;
+            flag = false;
+        } else {
+            if (Integer.parseInt(cost.getText().toString()) < 20) {
+                cost.setError("Cost is too small");
+                flag = false;
+            }
         }
 
         if (TextUtils.isEmpty(desc.getText().toString())) {
             desc.setError("You did not enter a description");
-            return false;
+            flag = false;
         }
-        return true;
+        return flag;
     }
 
     @Override
@@ -54,17 +55,16 @@ public class NewWishActivity extends AppCompatActivity {
                 return;
             }
 
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-            DatabaseReference wishRef = database.child("wishes").push();
+            DatabaseReference wishRef = PlannerCostants.databaseReference.child("wishes").push();
             Wish wish = new Wish(title.getText().toString(),
                     Integer.parseInt(cost.getText().toString()),
                     description.getText().toString(), wishRef.getKey());
             wishRef.setValue(wish);
 
             String currentUserID = mAuth.getCurrentUser().getUid();
-            database.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
+            PlannerCostants.databaseReference.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
 
             finish();
         });

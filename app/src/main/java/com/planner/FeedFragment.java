@@ -36,26 +36,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FeedFragment extends Fragment {
 
-    private View feedView;
     private RecyclerView recyclerView;
-    private DatabaseReference userRef, databaseReference;
     private Query doneTasksRef;
     private FirebaseAuth mAuth;
+    private Query completedTasksRef;
     private String currentUserId;
     private static final String TAG = "Feed Fragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        feedView = inflater.inflate(R.layout.fragment_feed, container, false);
+        View feedView = inflater.inflate(R.layout.fragment_feed, container, false);
         recyclerView = feedView.findViewById(R.id.feed_recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        mAuth = FirebaseAuth.getInstance();
-        currentUserId = mAuth.getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        userRef = databaseReference.child("users");
-        doneTasksRef = databaseReference.child("completedTasks").orderByChild("timestamp");
+        currentUserId = PlannerCostants.mAuth.getCurrentUser().getUid();
+        completedTasksRef = PlannerCostants.databaseReference.child("completedTasks").orderByChild("timestamp");
         return feedView;
     }
 
@@ -68,13 +64,11 @@ public class FeedFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull tasksViewHolder tasksViewHolder, int i, @NonNull CompletedTask s) {
                 String userId = s.getOwner();
-                //  Log.d(TAG, s.getOwner() + " " + s.getUploadId());
-                userRef.child(currentUserId).child("friends").child(userId).addValueEventListener(new ValueEventListener() {
+                PlannerCostants.userRef.child(currentUserId).child("friends").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            tasksViewHolder.itemView.setVisibility(View.VISIBLE);
-                            userRef.child(userId).addValueEventListener(new ValueEventListener() {
+                            PlannerCostants.userRef.child(userId).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String name = snapshot.child("name").getValue().toString();
@@ -118,7 +112,7 @@ public class FeedFragment extends Fragment {
 
                                 }
                             });
-                            databaseReference.child("tasks").child(getRef(i).getKey()).addValueEventListener(new ValueEventListener() {
+                            PlannerCostants.databaseReference.child("tasks").child(getRef(i).getKey()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot innerSnapshot) {
                                     if (innerSnapshot.exists()) {
@@ -138,6 +132,7 @@ public class FeedFragment extends Fragment {
                         } else {
                             tasksViewHolder.itemView.setVisibility(View.GONE);
                             tasksViewHolder.itemView.getLayoutParams().height = 0;
+
                         }
                     }
 

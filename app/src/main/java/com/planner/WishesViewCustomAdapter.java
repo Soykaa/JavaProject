@@ -55,13 +55,12 @@ public class WishesViewCustomAdapter extends BaseAdapter implements ListAdapter 
 
         TextView tvContact = view.findViewById(R.id.tvContact);
         Wish w = filteredWishList.get(position);
-        String text = Objects.requireNonNull(w).getTitle() + "\n\nPrice: " + Integer.toString(w.getCost());
+        String text = Objects.requireNonNull(w).getTitle() + "\n\nPrice: " + w.getCost();
         tvContact.setText(text);
         ImageView imageDelete = view.findViewById(R.id.deleteImage);
 
         imageDelete.setOnClickListener(v -> {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference databaseReference = database.child("wishes")
+            DatabaseReference databaseReference = PlannerCostants.databaseReference.child("wishes")
                     .child(filteredWishList.get(position).getId());
             databaseReference.removeValue();
             Toast.makeText(context, "Wish is deleted", Toast.LENGTH_LONG).show();

@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = PlannerCostants.mAuth.getCurrentUser();
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(intent);
@@ -60,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FeedFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_feed);
         }
-
-
+      
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
         ImageView image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);

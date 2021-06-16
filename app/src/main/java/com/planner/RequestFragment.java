@@ -28,23 +28,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RequestFragment extends Fragment {
 
-    private View requestsView;
     private RecyclerView requestsList;
-    private DatabaseReference requestsRef, userRef;
-    private FirebaseAuth mAuth;
+    private DatabaseReference requestsRef;
     private String currentUserId;
     private static final String TAG = "Request Fragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        requestsView = inflater.inflate(R.layout.fragment_request, container, false);
+        View requestsView = inflater.inflate(R.layout.fragment_request, container, false);
         requestsList = requestsView.findViewById(R.id.request_recycle_view);
         requestsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAuth = FirebaseAuth.getInstance();
-        currentUserId = mAuth.getCurrentUser().getUid();
+        currentUserId = PlannerCostants.mAuth.getCurrentUser().getUid();
         requestsRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("requests");
-        userRef = FirebaseDatabase.getInstance().getReference().child("users");
         return requestsView;
     }
 
@@ -56,7 +52,7 @@ public class RequestFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull RequestsViewHolder requestsViewHolder, int i, @NonNull Boolean user) {
                 String userId = getRef(i).getKey();
-                userRef.child(userId).addValueEventListener(new ValueEventListener() {
+                PlannerCostants.userRef.child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -73,17 +69,17 @@ public class RequestFragment extends Fragment {
                                     Log.d(TAG, "Accept request from " + name);
                                     Log.d(TAG, "Friend's id: " + userId);
                                     Log.d(TAG, "My id " + currentUserId);
-                                    userRef.child(currentUserId).child("friends").child(userId).setValue(true);
-                                    userRef.child(currentUserId).child("requests").child(userId).setValue(null);
-                                    userRef.child(userId).child("friends").child(currentUserId).setValue(true);
-                                    userRef.child(userId).child("requests").child(currentUserId).setValue(null);
+                                    PlannerCostants.userRef.child(currentUserId).child("friends").child(userId).setValue(true);
+                                    PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
+                                    PlannerCostants.userRef.child(userId).child("friends").child(currentUserId).setValue(true);
+                                    PlannerCostants.userRef.child(userId).child("requests").child(currentUserId).setValue(null);
                                 }
                             });
                             requestsViewHolder.declineRequest.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Log.d(TAG, "Decline request from " + name);
-                                    userRef.child(currentUserId).child("requests").child(userId).setValue(null);
+                                    PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
                                 }
                             });
                         }

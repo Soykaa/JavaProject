@@ -30,12 +30,10 @@ public class ViewTasksActivity extends AppCompatActivity {
     private String currentUserID;
     private static final String TAG = "ViewTasksActivity";
 
-    private void makeCompleted(CompletedTask tmp) {
-        Log.d(TAG, "makeCompleted");
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("completedTasks").child(tmp.getId()).setValue(tmp);
-        database.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
-        Query tasksQuery = database.child("users").child(currentUserID).child("taskIDs").orderByValue().equalTo(tmp.getId());
+    private void makeCompleted(int position, CompletedTask tmp) {
+        PlannerCostants.databaseReference.child("completedTasks").child(tmp.getId()).setValue(tmp);
+        PlannerCostants.databaseReference.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
+        Query tasksQuery = PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").orderByValue().equalTo(tmp.getId());
         tasksQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,8 +57,7 @@ public class ViewTasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
 
         FloatingActionButton imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
@@ -74,9 +71,8 @@ public class ViewTasksActivity extends AppCompatActivity {
         tasks = new ArrayList<>();
         taskAdapter = new TasksViewCustomAdapter(ViewTasksActivity.this, tasks);
         taskListView.setAdapter(taskAdapter);
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        PlannerCostants.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();

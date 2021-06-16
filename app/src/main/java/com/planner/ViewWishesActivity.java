@@ -29,13 +29,11 @@ public class ViewWishesActivity extends AppCompatActivity {
     WishesViewCustomAdapter wishAdapter;
 
     private void makeArchived(int position, Wish tmp) {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference wishRef = database.child("archivedWishes").push();
+        DatabaseReference wishRef = PlannerCostants.databaseReference.child("archivedWishes").push();
         wishRef.setValue(tmp);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserID = mAuth.getCurrentUser().getUid();
-        database.child("users").child(currentUserID).child("archivedWishesIDs").push().setValue(wishRef.getKey());
-        DatabaseReference databaseReference = database.child("wishes").child(wishes.get(position).getId());
+        String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
+        PlannerCostants.databaseReference.child("users").child(currentUserID).child("archivedWishesIDs").push().setValue(wishRef.getKey());
+        DatabaseReference databaseReference = PlannerCostants.databaseReference.child("wishes").child(wishes.get(position).getId());
         databaseReference.removeValue();
         wishAdapter.notifyDataSetChanged();
     }
@@ -56,14 +54,12 @@ public class ViewWishesActivity extends AppCompatActivity {
                 new Intent(this, NewWishActivity.class), RequestCodes.REQUEST_CODE_ADD_WISH));
 
         wishes = new ArrayList<>();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         wishAdapter = new WishesViewCustomAdapter(ViewWishesActivity.this, wishes);
         wishListView.setAdapter(wishAdapter);
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        String currentUserID = mAuth.getCurrentUser().getUid();
+        String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
 
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        PlannerCostants.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 wishes.clear();
@@ -122,7 +118,7 @@ public class ViewWishesActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                (ViewWishesActivity.this).wishAdapter.getFilter().filter(s.toString());
+                wishAdapter.getFilter().filter(s.toString());
             }
 
             @Override
