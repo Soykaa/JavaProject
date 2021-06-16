@@ -24,41 +24,35 @@ import java.util.Calendar;
 public class NewTaskActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "NewTaskActivity";
-
+    private Calendar calendar = Calendar.getInstance();
 
     private boolean inputIsCorrect(EditText title, EditText reward, EditText desc, TextView date, TextView time) {
         boolean flag = true;
         if (TextUtils.isEmpty(title.getText().toString())) {
             title.setError("You did not enter a title");
             flag = false;
-            Log.d(TAG, "not title");
         }
 
         if (TextUtils.isEmpty(desc.getText().toString())) {
             desc.setError("You did not enter a description");
-            Log.d(TAG, "no description");
             flag = false;
         }
 
         if (TextUtils.isEmpty(date.getText().toString())) {
             date.setError("You did not enter a deadline date");
-            Log.d(TAG, "no dedline");
             flag = false;
         }
 
         if (TextUtils.isEmpty(time.getText().toString())) {
             time.setError("You did not enter a deadline time");
-            Log.d(TAG, "not time");
             flag = false;
         }
 
         if (TextUtils.isEmpty(reward.getText().toString())) {
             reward.setError("You did not enter a reward");
             flag = false;
-            Log.d(TAG, "not reward");
         } else if (Integer.parseInt(reward.getText().toString()) < 20) {
             reward.setError("Cost is too small");
-            Log.d(TAG, "not cost");
             flag = false;
         }
 
@@ -76,14 +70,13 @@ public class NewTaskActivity extends AppCompatActivity
         TextView timeDeadline = findViewById(R.id.timeTextTask);
 
         imageBack.setOnClickListener(v -> onBackPressed());
-
         dateDeadline.setOnClickListener(v -> {
-            DialogFragment datePicker = new DatePickerFragment();
+            DialogFragment datePicker = new DatePickerFragment(calendar);
             datePicker.show(getSupportFragmentManager(), "date picker");
         });
 
         timeDeadline.setOnClickListener(v -> {
-            DialogFragment timePicker = new TimePickerFragment();
+            DialogFragment timePicker = new TimePickerFragment(calendar);
             timePicker.show(getSupportFragmentManager(), "time picker");
         });
 
@@ -99,14 +92,13 @@ public class NewTaskActivity extends AppCompatActivity
             }
 
 
-
             DatabaseReference taskRef = PlannerCostants.databaseReference.child("tasks").push();
 
             Task task = new Task(title.getText().toString(),
-                                 dateDeadline.getText().toString(),
-                                 timeDeadline.getText().toString(),
-                                 Integer.parseInt(reward.getText().toString()),
-                                 description.getText().toString(), taskRef.getKey());
+                    dateDeadline.getText().toString(),
+                    timeDeadline.getText().toString(),
+                    Integer.parseInt(reward.getText().toString()),
+                    description.getText().toString(), taskRef.getKey());
             taskRef.setValue(task);
 
             String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
@@ -118,11 +110,10 @@ public class NewTaskActivity extends AppCompatActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
         TextView textView = findViewById(R.id.deadlineTextTask);
         textView.setText(currentDateString);
     }
@@ -130,6 +121,8 @@ public class NewTaskActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hours, int minutes) {
         TextView textView = findViewById(R.id.timeTextTask);
-        textView.setText(hours +":" + minutes);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        textView.setText(hours + ":" + minutes);
     }
 }
