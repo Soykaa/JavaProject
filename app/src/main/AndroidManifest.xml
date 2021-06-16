@@ -9,8 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WishActivity"></activity>
+        <activity android:name=".SetTaskCompletedActivity"></activity>
+        <activity
+            android:name=".FriendActivity"
+            android:label="@string/title_activity_friend"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ViewWishesActivity" />
+        <activity android:name=".ViewTasksActivity" />
         <activity android:name=".NewWishActivity" />
+        <activity android:name=".SetWishCompletedActivity" />
         <activity
             android:name=".NewTaskActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />

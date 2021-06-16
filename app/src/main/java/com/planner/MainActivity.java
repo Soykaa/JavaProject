@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -27,18 +27,14 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
     protected DrawerLayout drawer;
-    private TextView name;
-    private ImageView image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = PlannerCostants.mAuth.getCurrentUser();
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(intent);
@@ -58,12 +54,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeScreen()).commit();
-            navigationView.setCheckedItem(R.id.nav_getting_started);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FeedFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_feed);
         }
 
-        name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
-        image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
+        TextView name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
+        ImageView image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (signInAccount != null) {
             if (name != null) {
@@ -95,14 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_getting_started:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WelcomeScreen()).commit();
+            case R.id.nav_feed:
+                feed();
                 break;
             case R.id.nav_sign_out:
                 logOut();
                 break;
-            case R.id.nav_new_task:
-                createTask();
+            case R.id.nav_all_tasks:
+                viewAllTasks();
                 break;
             case R.id.nav_all_wishes:
                 viewAllWishes();
@@ -116,9 +112,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void viewAllTasks() {
+        Intent intent = new Intent(this, ViewTasksActivity.class);
+        startActivity(intent);
+    }
+
+    private void feed() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FeedFragment()).commit();
+    }
+
 
     private void viewAllWishes() {
-        Intent intent = new Intent(this, WishActivity.class);
+        Intent intent = new Intent(this, ViewWishesActivity.class);
         startActivity(intent);
     }
 
@@ -127,14 +132,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    private void createTask() {
-        Intent intent = new Intent(this, NewTaskActivity.class);
-        startActivity(intent);
-    }
-
     private void logOut() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut();
         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);

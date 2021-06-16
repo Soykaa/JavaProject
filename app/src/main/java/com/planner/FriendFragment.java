@@ -25,23 +25,18 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendFragment extends Fragment {
-    private View friendsView;
     private RecyclerView friendsList;
-    private DatabaseReference friendsRef, userRef;
-    private FirebaseAuth mAuth;
-    private String currentUserId;
+    private DatabaseReference friendsRef;
     private static final String TAG = "Friend Fragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        friendsView = inflater.inflate(R.layout.fragment_friend, container, false);
+        View friendsView = inflater.inflate(R.layout.fragment_friend, container, false);
         friendsList = friendsView.findViewById(R.id.friend_recycle_view);
         friendsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAuth = FirebaseAuth.getInstance();
-        currentUserId = mAuth.getCurrentUser().getUid();
+        String currentUserId = PlannerCostants.mAuth.getCurrentUser().getUid();
         friendsRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("friends");
-        userRef = FirebaseDatabase.getInstance().getReference().child("users");
         return friendsView;
     }
 
@@ -53,7 +48,7 @@ public class FriendFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull FriendFragment.friendsViewHolder friendsViewHolder, int i, @NonNull Boolean user) {
                 String userId = getRef(i).getKey();
-                userRef.child(userId).addValueEventListener(new ValueEventListener() {
+                PlannerCostants.userRef.child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -76,9 +71,9 @@ public class FriendFragment extends Fragment {
 
             @NonNull
             @Override
-            public FriendFragment.friendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_friend_item, parent, false);
-                FriendFragment.friendsViewHolder viewHolder = new FriendFragment.friendsViewHolder(view);
+            public friendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item, parent, false);
+                friendsViewHolder viewHolder = new FriendFragment.friendsViewHolder(view);
                 return viewHolder;
             }
         };
@@ -96,7 +91,5 @@ public class FriendFragment extends Fragment {
             userName = itemView.findViewById(R.id.friend_name);
             userImage = itemView.findViewById(R.id.friend_image);
         }
-
-
     }
 }

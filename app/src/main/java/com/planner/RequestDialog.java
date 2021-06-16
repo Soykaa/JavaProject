@@ -24,13 +24,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 public class RequestDialog extends AppCompatDialogFragment {
     private static final String TAG = "Request Dialog";
-    private DatabaseReference rootRef, userRef;
     private EditText editTextUsername;
-    FirebaseUser currentUser;
 
     @NonNull
     @Override
@@ -38,8 +37,6 @@ public class RequestDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_request, null);
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userNameRef = rootRef.child("users");
         editTextUsername = view.findViewById(R.id.edit_username);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         AlertDialog dialog = builder.setView(view)
@@ -56,10 +53,8 @@ public class RequestDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 String requestName = editTextUsername.getText().toString();
-                if (requestName.equals(currentUser.getDisplayName())) {
-                    Snackbar.make(view, "Cannot send request to yourself ", Snackbar.LENGTH_LONG).show();
-                } else {
-                    userNameRef.orderByChild("name").equalTo(requestName).addListenerForSingleValueEvent(new ValueEventListener() {
+                if (!requestName.equals(currentUser.getDisplayName())) {
+                    PlannerCostants.userRef.orderByChild("name").equalTo(requestName).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
@@ -69,21 +64,20 @@ public class RequestDialog extends AppCompatDialogFragment {
                                     userId = datas.getKey();
                                 }
                                 String finalUserId = userId;
-                                userNameRef.child(currentUser.getUid()).child("friends").child(finalUserId).addValueEventListener(new ValueEventListener() {
+                                PlannerCostants.userRef.child(currentUser.getUid()).child("friends").child(finalUserId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
-                                        } else {
+                                        if (!snapshot.exists()) {
                                             //Username exists and isn't already a friend
-
                                             Log.i(TAG, "send request to " + finalUserId);
                                             String userId = currentUser.getUid();
-                                            userNameRef.child(finalUserId).child("requests").child(userId).setValue(true);
+                                            PlannerCostants.userRef.child(finalUserId).child("requests").child(userId).setValue(true);
                                             dialog.dismiss();
+
+                                        } else {
+                                            Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
                                         }
                                     }
-
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -100,6 +94,8 @@ public class RequestDialog extends AppCompatDialogFragment {
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
+                } else {
+                    Snackbar.make(view, "Cannot send request to yourself ", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

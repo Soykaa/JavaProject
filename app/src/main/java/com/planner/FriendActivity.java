@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FriendActivity extends AppCompatActivity {
-    private CustomFragmentPagerAdapter customFragmentPagerAdapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -27,18 +26,13 @@ public class FriendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
         ViewPager viewPager = findViewById(R.id.view_pager);
-        customFragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
+        CustomFragmentPagerAdapter customFragmentPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(customFragmentPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
+        fab.setOnClickListener(view -> openDialog());
     }
 
     private void openDialog() {

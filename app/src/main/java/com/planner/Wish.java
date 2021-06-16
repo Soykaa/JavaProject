@@ -2,19 +2,32 @@ package com.planner;
 
 public class Wish {
     private String title;
-    private String price;
+    private int cost;
     private String description;
+    private String id;
 
-    public Wish() {};
+    // must-have for database correct work!
+    public Wish() {}
 
-    public Wish(String title, String price, String description) {
+    public Wish(String title, int cost, String description, String id) {
         this.title = title;
-        this.price = price;
+        this.cost = cost;
+        this.description = description;
+        this.id = id;
+    }
+
+    public Wish(String title, int cost, String description) {
+        this.title = title;
+        this.cost = cost;
         this.description = description;
     }
 
-    public String getPrice() {
-        return price;
+    public String getId() {
+        return id;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     public String getDescription() {
@@ -29,8 +42,8 @@ public class Wish {
         this.title = title;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public void setDescription(String description) {

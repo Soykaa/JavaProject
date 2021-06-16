@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetWishCompletedActivity">
+
+    <ImageView
+        android:id="@+id/imageChangeStatusWish"
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="352dp"
+        android:layout_marginLeft="352dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_done_button"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        android:src="@drawable/ic_done"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageBackSetWishCompleted"
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_back"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/titleWish"
+
+        android:layout_width="390dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="116dp"
+        android:background="@null"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:textSize="40sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/costWish"
+
+        style="@android:style/Widget.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="172dp"
+        android:background="@null"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionWord"
+
+        android:layout_width="376dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="300dp"
+        android:background="@null"
+        android:includeFontPadding="false"
+        android:text="Description:"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/descWish"
+
+        android:layout_width="390dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="340dp"
+        android:background="@null"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
