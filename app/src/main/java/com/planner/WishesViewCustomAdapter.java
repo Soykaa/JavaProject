@@ -55,7 +55,7 @@ public class WishesViewCustomAdapter extends BaseAdapter implements ListAdapter 
 
         TextView tvContact = view.findViewById(R.id.tvContact);
         Wish w = filteredWishList.get(position);
-        String text = Objects.requireNonNull(w).getTitle() + "\n\nPrice: " + Integer.toString(w.getCost());
+        String text = Objects.requireNonNull(w).getTitle() + "\n\nPrice: " + w.getCost();
         tvContact.setText(text);
         ImageView imageDelete = view.findViewById(R.id.deleteImage);
 

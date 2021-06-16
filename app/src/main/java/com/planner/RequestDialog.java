@@ -53,9 +53,7 @@ public class RequestDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 String requestName = editTextUsername.getText().toString();
-                if (requestName.equals(currentUser.getDisplayName())) {
-                    Snackbar.make(view, "Cannot send request to yourself ", Snackbar.LENGTH_LONG).show();
-                } else {
+                if (!requestName.equals(currentUser.getDisplayName())) {
                     PlannerCostants.userRef.orderByChild("name").equalTo(requestName).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,17 +67,17 @@ public class RequestDialog extends AppCompatDialogFragment {
                                 PlannerCostants.userRef.child(currentUser.getUid()).child("friends").child(finalUserId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
-                                        } else {
+                                        if (!snapshot.exists()) {
                                             //Username exists and isn't already a friend
                                             Log.i(TAG, "send request to " + finalUserId);
                                             String userId = currentUser.getUid();
                                             PlannerCostants.userRef.child(finalUserId).child("requests").child(userId).setValue(true);
                                             dialog.dismiss();
+
+                                        } else {
+                                            Snackbar.make(view, "Already a friend", Snackbar.LENGTH_LONG).show();
                                         }
                                     }
-
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -96,6 +94,8 @@ public class RequestDialog extends AppCompatDialogFragment {
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
+                } else {
+                    Snackbar.make(view, "Cannot send request to yourself ", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,7 +69,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
                 intent.putExtra("cost", cost);
                 intent.putExtra("pos", pos);
                 setResult(RESULT_OK, intent);
-                substractCostPoints(cost);
+                subtractCostPoints(cost);
                 finish();
             }
             else {
@@ -79,7 +78,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
         });
     }
 
-    private void substractCostPoints(int cost) {
+    private void subtractCostPoints(int cost) {
         String userID = PlannerCostants.mAuth.getCurrentUser().getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
                 .child("users")

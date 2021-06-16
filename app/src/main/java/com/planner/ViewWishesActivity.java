@@ -117,7 +117,7 @@ public class ViewWishesActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                (ViewWishesActivity.this).wishAdapter.getFilter().filter(s.toString());
+                wishAdapter.getFilter().filter(s.toString());
             }
 
             @Override

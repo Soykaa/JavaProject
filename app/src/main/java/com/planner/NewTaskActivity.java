@@ -48,11 +48,6 @@ public class NewTaskActivity extends AppCompatActivity
             return false;
         }
 
-        if (TextUtils.isEmpty(date.getText().toString())) {
-            date.setError("You did not enter a deadline date");
-            return false;
-        }
-
         if (TextUtils.isEmpty(time.getText().toString())) {
             time.setError("You did not enter a deadline time");
             return false;
