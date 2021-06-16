@@ -33,7 +33,6 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String desc;
     private int reward;
     private int pos;
-    private long timestamp;
     private Uri fileImageUri;
     private ImageView imageFile;
     private StorageReference storageReference;

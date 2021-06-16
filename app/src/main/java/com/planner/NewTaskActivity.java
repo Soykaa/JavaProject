@@ -93,10 +93,9 @@ public class NewTaskActivity extends AppCompatActivity
                 return;
             }
 
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-            DatabaseReference taskRef = database.child("tasks").push();
+
+            DatabaseReference taskRef = PlannerCostants.databaseReference.child("tasks").push();
 
             Task task = new Task(title.getText().toString(),
                                  dateDeadline.getText().toString(),
@@ -105,8 +104,8 @@ public class NewTaskActivity extends AppCompatActivity
                                  description.getText().toString(), taskRef.getKey());
             taskRef.setValue(task);
 
-            String currentUserID = mAuth.getCurrentUser().getUid();
-            database.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
+            String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
+            PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
 
             finish();
         });

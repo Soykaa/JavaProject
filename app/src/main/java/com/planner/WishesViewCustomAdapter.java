@@ -60,8 +60,7 @@ public class WishesViewCustomAdapter extends BaseAdapter implements ListAdapter 
         ImageView imageDelete = view.findViewById(R.id.deleteImage);
 
         imageDelete.setOnClickListener(v -> {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference databaseReference = database.child("wishes")
+            DatabaseReference databaseReference = PlannerCostants.databaseReference.child("wishes")
                     .child(filteredWishList.get(position).getId());
             databaseReference.removeValue();
             Toast.makeText(context, "Wish is deleted", Toast.LENGTH_LONG).show();

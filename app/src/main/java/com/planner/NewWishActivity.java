@@ -54,17 +54,16 @@ public class NewWishActivity extends AppCompatActivity {
                 return;
             }
 
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-            DatabaseReference wishRef = database.child("wishes").push();
+            DatabaseReference wishRef = PlannerCostants.databaseReference.child("wishes").push();
             Wish wish = new Wish(title.getText().toString(),
                     Integer.parseInt(cost.getText().toString()),
                     description.getText().toString(), wishRef.getKey());
             wishRef.setValue(wish);
 
             String currentUserID = mAuth.getCurrentUser().getUid();
-            database.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
+            PlannerCostants.databaseReference.child("users").child(currentUserID).child("wishIDs").push().setValue(wishRef.getKey());
 
             finish();
         });

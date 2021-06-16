@@ -44,8 +44,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
         TextView wishCost = findViewById(R.id.costWish);
         wishCost.setText("cost: " + cost);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String userID = mAuth.getCurrentUser().getUid();
+        String userID = PlannerCostants.mAuth.getCurrentUser().getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(userID)
@@ -81,8 +80,7 @@ public class SetWishCompletedActivity extends AppCompatActivity {
     }
 
     private void substractCostPoints(int cost) {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String userID = mAuth.getCurrentUser().getUid();
+        String userID = PlannerCostants.mAuth.getCurrentUser().getUid();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(userID)
