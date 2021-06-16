@@ -98,6 +98,7 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("reward", tasks.get(position).getReward());
             intent.putExtra("desc", tasks.get(position).getDescription());
             intent.putExtra("pos", position);
+            intent.putExtra("parent", tasks.get(position).getParent());
             taskAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
         });

@@ -21,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,6 +34,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String desc;
     private int reward;
     private int pos;
+    private String parent;
     private Uri fileImageUri;
     private ImageView imageFile;
     private String uploadId = null;
@@ -52,6 +52,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         Button chooseImageButton = findViewById(R.id.chooseFileButton);
 
         title = getIntent().getStringExtra("title");
+        parent = getIntent().getStringExtra("parent");
         desc = getIntent().getStringExtra("desc");
         reward = getIntent().getIntExtra("reward", 0);
         pos = getIntent().getIntExtra("pos", 0);
@@ -84,6 +85,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
             intent.putExtra("pos", pos);
+            intent.putExtra("parent", parent);
             addRewardPoints(reward);
             uploadFile(intent);
         });
