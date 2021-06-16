@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -57,11 +62,13 @@ public class FeedFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<CompletedTask>().setQuery(doneTasksRef, CompletedTask.class).build();
         FirebaseRecyclerAdapter<CompletedTask, FeedFragment.tasksViewHolder> adapter = new FirebaseRecyclerAdapter<CompletedTask, tasksViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull tasksViewHolder tasksViewHolder, int i, @NonNull CompletedTask s) {
                 String userId = s.getOwner();
+                //  Log.d(TAG, s.getOwner() + " " + s.getUploadId());
                 userRef.child(currentUserId).child("friends").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -71,13 +78,39 @@ public class FeedFragment extends Fragment {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     String name = snapshot.child("name").getValue().toString();
-                                    Log.d(TAG, "owner " + name);
                                     String imageId = snapshot.child("profileImage").getValue().toString();
                                     tasksViewHolder.userName.setText(name);
                                     Picasso.get()
                                             .load(imageId)
                                             .placeholder(R.drawable.ic_launcher_foreground)
                                             .into(tasksViewHolder.userImage);
+
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTimeInMillis(s.getTimestampLong());
+                                    SimpleDateFormat fmt = new SimpleDateFormat("dd MMM. kk:mm", Locale.US);
+                                    String time = fmt.format(cal.getTime());
+                                    //   Log.d(TAG, "TIME : " + time);
+
+                                    tasksViewHolder.taskTime.setText(time);
+                                    if (s.getUploadId() != null) {
+                                        DatabaseReference uploadRef = databaseReference.child("uploads").child(s.getUploadId());
+                                        uploadRef.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    UploadFile file = snapshot.getValue(UploadFile.class);
+                                                    Picasso.get()
+                                                            .load(file.getFileUrl())
+                                                            .into(tasksViewHolder.taskImage);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
                                 }
 
                                 @Override
@@ -90,9 +123,10 @@ public class FeedFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot innerSnapshot) {
                                     if (innerSnapshot.exists()) {
                                         Task task = innerSnapshot.getValue(Task.class);
-                                        Log.d(TAG, "title " + task.getTitle());
-                                        tasksViewHolder.taskTitle.setText(task.getTitle());
-                                        tasksViewHolder.taskDescription.setText(task.getDescription());
+                                        String title = "Title: " + task.getTitle();
+                                        String description = "Description:\n" + task.getDescription();
+                                        tasksViewHolder.taskTitle.setText(title);
+                                        tasksViewHolder.taskDescription.setText(description);
                                     }
                                 }
 
@@ -129,8 +163,9 @@ public class FeedFragment extends Fragment {
 
     public static class tasksViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView taskTitle, taskDescription, userName;
+        private final TextView taskTitle, taskDescription, userName, taskTime;
         private final CircleImageView userImage;
+        private final ImageView taskImage;
 
         public tasksViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -138,6 +173,8 @@ public class FeedFragment extends Fragment {
             userImage = itemView.findViewById(R.id.task_user_image);
             taskTitle = itemView.findViewById(R.id.user_task_title);
             taskDescription = itemView.findViewById(R.id.user_task_description);
+            taskImage = itemView.findViewById(R.id.user_task_image);
+            taskTime = itemView.findViewById(R.id.user_task_time);
         }
     }
 }

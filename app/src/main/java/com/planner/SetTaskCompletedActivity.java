@@ -103,13 +103,18 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                    UploadFile upload = new UploadFile("picture", taskSnapshot.getMetadata()
-                            .getReference().getDownloadUrl().toString());
-                    uploadId = databaseSReference.push().getKey();
-                    databaseSReference.child(uploadId).setValue(upload);
-                    intent.putExtra("uploadId", uploadId);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            UploadFile upload = new UploadFile("picture", uri.toString());
+                            Log.d(TAG, "uploadFile " + uri.toString());
+                            uploadId = databaseSReference.push().getKey();
+                            databaseSReference.child(uploadId).setValue(upload);
+                            intent.putExtra("uploadId", uploadId);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
