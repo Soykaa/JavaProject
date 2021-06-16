@@ -13,11 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
@@ -61,10 +58,10 @@ public class ViewTasksActivity extends AppCompatActivity {
 
         FloatingActionButton imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
-      //  ImageView imageBack = findViewById(R.id.imageBackAllTasks);
+        ImageView imageBack = findViewById(R.id.imageBackAllTasks);
         EditText tasksSearch = findViewById(R.id.inputSearchTasks);
 
-       // imageBack.setOnClickListener(v -> onBackPressed());
+        imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(this, NewTaskActivity.class), RequestCodes.REQUEST_CODE_ADD_TASK));
 
