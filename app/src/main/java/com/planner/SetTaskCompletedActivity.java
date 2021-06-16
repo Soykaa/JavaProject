@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,8 +37,10 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private int pos;
     private Uri fileImageUri;
     private ImageView imageFile;
+    private String uploadId = null;
     private StorageReference storageReference;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseSReference;
+    private static final String TAG = "SetTaskCompleted";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
 
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        databaseSReference = FirebaseDatabase.getInstance().getReference("uploads");
 
         chooseImageButton.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -71,7 +75,6 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_ADD_IMAGE);
         });
-
 
         imageBack.setOnClickListener(v -> onBackPressed());
         imageSetTaskCompleted.setOnClickListener(v -> {
@@ -81,11 +84,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
             intent.putExtra("pos", pos);
-            setResult(RESULT_OK, intent);
-
             addRewardPoints(reward);
-
-            finish();
+            uploadFile(intent);
         });
     }
 
@@ -95,7 +95,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadFile() {
+    private void uploadFile(Intent intent) {
         if (fileImageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtension(fileImageUri));
@@ -103,10 +103,18 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                    UploadFile upload = new UploadFile("picture", taskSnapshot.getMetadata()
-                            .getReference().getDownloadUrl().toString());
-                    String uploadId = databaseReference.push().getKey();
-                    databaseReference.child(uploadId).setValue(upload);
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            UploadFile upload = new UploadFile("picture", uri.toString());
+                            Log.d(TAG, "uploadFile " + uri.toString());
+                            uploadId = databaseSReference.push().getKey();
+                            databaseSReference.child(uploadId).setValue(upload);
+                            intent.putExtra("uploadId", uploadId);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -116,6 +124,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 

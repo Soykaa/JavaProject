@@ -16,4 +16,9 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
 
+    <string name="tasks">Tasks</string>
+    <string name="wishes">Wishes</string>
+
+    <string name="add_new_task">Add new task</string>
+    <string name="add_new_wish">Add new wish</string>
 </resources>

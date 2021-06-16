@@ -3,6 +3,7 @@ package com.planner;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -28,6 +29,7 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected DrawerLayout drawer;
+    private static final String TAG = "Main Activity";
 
 
     @Override
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FeedFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_feed);
         }
-
+      
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.profile_name);
         ImageView image = navigationView.getHeaderView(0).findViewById(R.id.profile_image);
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
