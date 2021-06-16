@@ -30,7 +30,7 @@ public class ViewTasksActivity extends AppCompatActivity {
     private String currentUserID;
     private static final String TAG = "ViewTasksActivity";
 
-    private void makeCompleted(int position, CompletedTask tmp) {
+    private void makeCompleted(CompletedTask tmp) {
         PlannerCostants.databaseReference.child("completedTasks").child(tmp.getId()).setValue(tmp);
         PlannerCostants.databaseReference.child("users").child(currentUserID).child("completedTaskIDs").push().setValue(tmp.getId());
         Query tasksQuery = PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").orderByValue().equalTo(tmp.getId());
