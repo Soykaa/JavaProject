@@ -13,4 +13,5 @@
 На накопленные очки пользователь может выбрать желание из списка
 
 ## Скриншоты
-<img  width="290" alt="Снимок экрана 2021-06-17 в 13 57 18" src="https://user-images.githubusercontent.com/57727520/122464496-94f94780-cfbf-11eb-9f54-379f422823ce.png" hspace="10"><img width="290" alt="Снимок экрана 2021-06-17 в 15 05 13" src="https://user-images.githubusercontent.com/57727520/122464655-c1ad5f00-cfbf-11eb-885f-72d30f9e3d77.png" hspace="10"><img width="290" src="https://user-images.githubusercontent.com/57727520/122466202-ac393480-cfc1-11eb-8d5c-9422bdfeab8b.png" hspace="10">
+<img  width="290" alt="Снимок экрана 2021-06-17 в 13 57 18" src="https://user-images.githubusercontent.com/57727520/122464496-94f94780-cfbf-11eb-9f54-379f422823ce.png" hspace="10"><img width="290" alt="Снимок экрана 2021-06-17 в 15 05 13" src="https://user-images.githubusercontent.com/57727520/122464655-c1ad5f00-cfbf-11eb-885f-72d30f9e3d77.png" hspace="10">
+<img width="290" src="https://user-images.githubusercontent.com/57727520/122466202-ac393480-cfc1-11eb-8d5c-9422bdfeab8b.png" hspace="10"><img width="290" src="https://user-images.githubusercontent.com/57727520/122466585-2b2e6d00-cfc2-11eb-9e38-fb340e3280ec.png" hspace="10">
