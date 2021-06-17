@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class OfferedTasksViewCustomAdapter extends BaseAdapter implements ListAdapter {
     private final Context context;
     private final ArrayList<Task> offeredTaskList;
-    private String parentName;
 
     public OfferedTasksViewCustomAdapter(Context context, ArrayList<Task> offeredTaskList) {
         this.context = context;
@@ -54,12 +53,14 @@ public class OfferedTasksViewCustomAdapter extends BaseAdapter implements ListAd
             view = inflater.inflate(R.layout.offered_tasks_list_view_layout, null);
         }
 
-        TextView tvContact = view.findViewById(R.id.tvContact);
+        TextView parentName = view.findViewById(R.id.parentName);
+        TextView taskDesc = view.findViewById(R.id.taskDesc);
         Task t = offeredTaskList.get(position);
         PlannerCostants.userRef.child(t.getParentId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                parentName = snapshot.child("name").getValue().toString();
+                String pName = snapshot.child("name").getValue().toString();
+                parentName.setText("Author: " + pName);
             }
 
             @Override
@@ -67,8 +68,8 @@ public class OfferedTasksViewCustomAdapter extends BaseAdapter implements ListAd
 
             }
         });
-        String text = t.getTitle() + "\nAuthor:" + parentName + "\n\nReward: " + t.getReward() + "\nDeadline:\n" + t.getDate() + " " + t.getTime();
-        tvContact.setText(text);
+        String text = "\n\nTitle: " + t.getTitle() + "\nReward: " + t.getReward() + "\nDeadline:\n" + t.getDate() + " " + t.getTime();
+        taskDesc.setText(text);
 
         Button accept = view.findViewById(R.id.button_accept_task);
         Button decline = view.findViewById(R.id.button_decline_task);
@@ -79,11 +80,11 @@ public class OfferedTasksViewCustomAdapter extends BaseAdapter implements ListAd
         });
 
         accept.setOnClickListener(v -> {
+            remove(position);
             DatabaseReference taskRef = PlannerCostants.databaseReference.child("tasks").push();
             taskRef.setValue(t);
             String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
             PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
-            remove(position);
             Toast.makeText(context, "Task is accepted", Toast.LENGTH_LONG).show();
         });
         return view;
