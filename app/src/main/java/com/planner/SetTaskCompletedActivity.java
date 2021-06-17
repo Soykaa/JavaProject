@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -105,23 +103,17 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         if (fileImageUri != null) {
             StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtension(fileImageUri));
-            fileReference.putFile(fileImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            UploadFile upload = new UploadFile("picture", uri.toString());
-                            Log.d(TAG, "uploadFile " + uri.toString());
-                            uploadId = databaseSReference.push().getKey();
-                            databaseSReference.child(uploadId).setValue(upload);
-                            intent.putExtra("uploadId", uploadId);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    });
-                }
+            fileReference.putFile(fileImageUri).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(SetTaskCompletedActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    UploadFile upload = new UploadFile("picture", uri.toString());
+                    Log.d(TAG, "uploadFile " + uri.toString());
+                    uploadId = databaseSReference.push().getKey();
+                    databaseSReference.child(uploadId).setValue(upload);
+                    intent.putExtra("uploadId", uploadId);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                });
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull @NotNull Exception e) {

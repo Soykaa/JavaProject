@@ -62,24 +62,18 @@ public class RequestFragment extends Fragment {
                                     .load(imageId)
                                     .placeholder(R.drawable.ic_launcher_foreground)
                                     .into(requestsViewHolder.userImage);
-                            requestsViewHolder.acceptRequest.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Log.d(TAG, "Accept request from " + name);
-                                    Log.d(TAG, "Friend's id: " + userId);
-                                    Log.d(TAG, "My id " + currentUserId);
-                                    PlannerCostants.userRef.child(currentUserId).child("friends").child(userId).setValue(true);
-                                    PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
-                                    PlannerCostants.userRef.child(userId).child("friends").child(currentUserId).setValue(true);
-                                    PlannerCostants.userRef.child(userId).child("requests").child(currentUserId).setValue(null);
-                                }
+                            requestsViewHolder.acceptRequest.setOnClickListener(v -> {
+                                Log.d(TAG, "Accept request from " + name);
+                                Log.d(TAG, "Friend's id: " + userId);
+                                Log.d(TAG, "My id " + currentUserId);
+                                PlannerCostants.userRef.child(currentUserId).child("friends").child(userId).setValue(true);
+                                PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
+                                PlannerCostants.userRef.child(userId).child("friends").child(currentUserId).setValue(true);
+                                PlannerCostants.userRef.child(userId).child("requests").child(currentUserId).setValue(null);
                             });
-                            requestsViewHolder.declineRequest.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Log.d(TAG, "Decline request from " + name);
-                                    PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
-                                }
+                            requestsViewHolder.declineRequest.setOnClickListener(v -> {
+                                Log.d(TAG, "Decline request from " + name);
+                                PlannerCostants.userRef.child(currentUserId).child("requests").child(userId).setValue(null);
                             });
                         }
                     }
@@ -105,7 +99,8 @@ public class RequestFragment extends Fragment {
 
         private final TextView userName;
         private final CircleImageView userImage;
-        private Button acceptRequest, declineRequest;
+        private final Button acceptRequest;
+        private final Button declineRequest;
 
         public RequestsViewHolder(@NonNull View itemView) {
             super(itemView);
