@@ -63,8 +63,8 @@ public class FriendFragment extends Fragment {
                             friendsViewHolder.suggestTask.setOnClickListener(v -> {
                                 Intent intent = new Intent(getContext(), NewTaskActivity.class);
                                 String currentUserId = PlannerCostants.mAuth.getCurrentUser().getUid();
-                                intent.putExtra("parent", currentUserId);
-                                intent.putExtra("adresse", userId);
+                                intent.putExtra("parentId", currentUserId);
+                                intent.putExtra("adresseId", userId);
                                 startActivity(intent);
                             });
                         }

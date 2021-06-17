@@ -1,7 +1,7 @@
 package com.planner;
 
 public class Task {
-    private String parent;
+    private String parentId;
     private String title;
     private String date;
     private String time;
@@ -11,8 +11,8 @@ public class Task {
 
     public Task() {};
 
-    public Task(String parent, String title, String date, String time, int reward, String description, String id) {
-        this.parent = parent;
+    public Task(String parentId, String title, String date, String time, int reward, String description, String id) {
+        this.parentId = parentId;
         this.title = title;
         this.date = date;
         this.time = time;
@@ -21,15 +21,15 @@ public class Task {
         this.id = id;
     }
 
-    public Task(String parent, String title, String description, int reward) {
-        this.parent = parent;
-        this.title = title;
-        this.description = description;
-        this.reward = reward;
-    }
+//    public Task(String parentId, String title, String description, int reward) {
+//        this.parentId = parentId;
+//        this.title = title;
+//        this.description = description;
+//        this.reward = reward;
+//    }
 
-    public String getParent() {
-        return parent;
+    public String getParentId() {
+        return parentId;
     }
 
     public String getTitle() {

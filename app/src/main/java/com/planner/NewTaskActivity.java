@@ -66,8 +66,8 @@ public class NewTaskActivity extends AppCompatActivity
         TextView dateDeadline = findViewById(R.id.deadlineTextTask);
         TextView timeDeadline = findViewById(R.id.timeTextTask);
 
-        String parent = getIntent().getStringExtra("parent");
-        String adresse = getIntent().getStringExtra("adresse");
+        String parentId = getIntent().getStringExtra("parentId");
+        String adresseId = getIntent().getStringExtra("adresseId");
 
         imageBack.setOnClickListener(v -> onBackPressed());
         dateDeadline.setOnClickListener(v -> {
@@ -91,30 +91,31 @@ public class NewTaskActivity extends AppCompatActivity
                 return;
             }
 
-            String taskParent = "me";
-            if (parent != null) {
-                taskParent = parent;
+            String taskParentId = "me";
+
+            if (parentId != null) {
+                taskParentId = parentId;
             }
 
             DatabaseReference taskRef;
-            if (parent.equals("me")) {
+            if (parentId == null) {
                 taskRef = PlannerCostants.databaseReference.child("tasks").push();
             } else {
                 taskRef = PlannerCostants.databaseReference.child("offeredTasks").push();
             }
 
-            Task task = new Task(taskParent, title.getText().toString(),
+            Task task = new Task(taskParentId, title.getText().toString(),
                     dateDeadline.getText().toString(),
                     timeDeadline.getText().toString(),
                     Integer.parseInt(reward.getText().toString()),
                     description.getText().toString(), taskRef.getKey());
             taskRef.setValue(task);
 
-            if (parent.equals("me")) {
+            if (parentId == null) {
                 String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
                 PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
             } else {
-                PlannerCostants.databaseReference.child("users").child(adresse).child("offeredTaskIDs").push().setValue(taskRef.getKey());
+                PlannerCostants.databaseReference.child("users").child(adresseId).child("offeredTaskIDs").push().setValue(taskRef.getKey());
             }
 
             finish();

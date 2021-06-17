@@ -73,7 +73,6 @@ public class ViewTasksActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();
-
                 for (DataSnapshot s : snapshot.child("users").child(currentUserID).child("taskIDs").getChildren()) {
                     String taskID = s.getValue(String.class);
                     Task t = snapshot.child("tasks").child(taskID).getValue(Task.class);
@@ -98,7 +97,7 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("reward", tasks.get(position).getReward());
             intent.putExtra("desc", tasks.get(position).getDescription());
             intent.putExtra("pos", position);
-            intent.putExtra("parent", tasks.get(position).getParent());
+            intent.putExtra("parentId", tasks.get(position).getParentId());
             taskAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
         });
@@ -124,13 +123,10 @@ public class ViewTasksActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED) {
-                boolean isOk = data.getBooleanExtra("isOk", false);
-                if (isOk) {
-                    int position = data.getIntExtra("pos", -1);
-                    String uploadId = data.getStringExtra("uploadId");
-                    CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP, uploadId);
-                    makeCompleted(tmp);
-                }
+                int position = data.getIntExtra("pos", -1);
+                String uploadId = data.getStringExtra("uploadId");
+                CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP, uploadId);
+                makeCompleted(tmp);
             }
         }
     }

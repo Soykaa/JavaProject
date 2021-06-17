@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/textOfferedTasks"
         android:layout_width="match_parent"
-        android:layout_height="45"
+        android:layout_height="45sp"
         android:layout_marginStart="12sp"
         android:layout_marginLeft="12sp"
         android:layout_marginTop="20sp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/imageBackAllTasks"
+        android:id="@+id/imageBackOfferedTasks"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="315dp"
@@ -37,7 +37,7 @@
         tools:ignore="MissingConstraints" />
 
     <ListView
-        android:id="@+id/tasksListView"
+        android:id="@+id/offeredTasksListView"
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:clipToPadding="false"
@@ -47,5 +47,5 @@
         android:paddingRight="12sp"
         android:paddingBottom="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textOfferedTasks"></ListView>
+        app:layout_constraintTop_toBottomOf="@id/textOfferedTasks" />
 </androidx.constraintlayout.widget.ConstraintLayout>

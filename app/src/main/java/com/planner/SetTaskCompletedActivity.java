@@ -34,7 +34,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private String desc;
     private int reward;
     private int pos;
-    private String parent;
+    private String parentId;
     private Uri fileImageUri;
     private ImageView imageFile;
     private String uploadId = null;
@@ -52,7 +52,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         Button chooseImageButton = findViewById(R.id.chooseFileButton);
 
         title = getIntent().getStringExtra("title");
-        parent = getIntent().getStringExtra("parent");
+        parentId = getIntent().getStringExtra("parentId");
         desc = getIntent().getStringExtra("desc");
         reward = getIntent().getIntExtra("reward", 0);
         pos = getIntent().getIntExtra("pos", 0);
@@ -80,12 +80,11 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
         imageSetTaskCompleted.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("isOk", true);
             intent.putExtra("title", title);
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
             intent.putExtra("pos", pos);
-            intent.putExtra("parent", parent);
+            intent.putExtra("parentId", parentId);
             addRewardPoints(reward);
             uploadFile(intent);
         });
