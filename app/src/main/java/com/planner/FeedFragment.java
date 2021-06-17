@@ -60,6 +60,10 @@ public class FeedFragment extends Fragment {
     public void onStart() {
         super.onStart();
         recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<CompletedTask>().setQuery(doneTasksRef, CompletedTask.class).build();
         FirebaseRecyclerAdapter<CompletedTask, FeedFragment.tasksViewHolder> adapter = new FirebaseRecyclerAdapter<CompletedTask, tasksViewHolder>(options) {
             @Override
