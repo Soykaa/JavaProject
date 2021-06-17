@@ -77,6 +77,11 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_ADD_IMAGE);
         });
 
+        imageSetTaskCompleted.setEnabled(false);
+        if (imageFile != null) {
+            imageSetTaskCompleted.setEnabled(true);
+        }
+
         imageBack.setOnClickListener(v -> onBackPressed());
         imageSetTaskCompleted.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -124,8 +129,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK, intent);
+            Toast.makeText(this, "No file selected, try again", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
