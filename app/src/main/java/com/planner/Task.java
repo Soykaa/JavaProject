@@ -5,19 +5,42 @@ public class Task {
     private String date;
     private String time;
     private int reward;
+    private int deadlinePenalty;
     private String description;
-    private String timestamp;
+    private long timestamp;
     private String id;
 
     public Task() {};
 
-    public Task(String title, String date, String time, int reward, String description, String id) {
+    public Task(String title, String date, String time, int reward, int deadlinePenalty, String description, String id, long timestamp) {
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.reward = reward;
+        this.deadlinePenalty = deadlinePenalty;
+        this.description = description;
+        this.id = id;
+        this.timestamp = timestamp;
+    }
+
+    public Task(String title, String date, String time, int reward, int deadlinePenalty, String description, String id) {
+        this.title = title;
+        this.date = date;
+        this.time = time;
+        this.reward = reward;
+        this.deadlinePenalty = deadlinePenalty;
+        this.description = description;
+        this.id = id;
+    }
+
+    public Task(String title, String date, String time, int reward, String description, String id, int timestamp) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.reward = reward;
         this.description = description;
         this.id = id;
+        this.timestamp = timestamp;
     }
 
     public Task(String title, String description, int reward) {
@@ -42,6 +65,10 @@ public class Task {
         return reward;
     }
 
+    public int getDeadlinePenalty() {
+        return deadlinePenalty;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -52,6 +79,10 @@ public class Task {
 
     public String getId() {
         return id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 }
 

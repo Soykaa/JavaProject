@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,12 +13,15 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
 
 public class NewTaskActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -84,6 +86,7 @@ public class NewTaskActivity extends AppCompatActivity
         saveButton.setOnClickListener(v -> {
             EditText title = findViewById(R.id.inputTitleTask);
             EditText reward = findViewById(R.id.rewardTextTask);
+            EditText penalty = findViewById(R.id.penaltyText);
             EditText description = findViewById(R.id.inputDescTask);
 
             if (!inputIsCorrect(title, reward, description,
@@ -94,11 +97,19 @@ public class NewTaskActivity extends AppCompatActivity
 
             DatabaseReference taskRef = PlannerCostants.databaseReference.child("tasks").push();
 
-            Task task = new Task(title.getText().toString(),
-                    dateDeadline.getText().toString(),
-                    timeDeadline.getText().toString(),
+            String date = dateDeadline.getText().toString();
+            String time = timeDeadline.getText().toString();
+
+            Task task = new Task(
+                    title.getText().toString(),
+                    date,
+                    time,
                     Integer.parseInt(reward.getText().toString()),
-                    description.getText().toString(), taskRef.getKey());
+                    Integer.parseInt(penalty.getText().toString()),
+                    description.getText().toString(),
+                    taskRef.getKey(),
+                    getTimestamp(date, time)
+            );
             taskRef.setValue(task);
 
             String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
@@ -125,4 +136,63 @@ public class NewTaskActivity extends AppCompatActivity
         calendar.set(Calendar.MINUTE, minutes);
         textView.setText(hours + ":" + minutes);
     }
+
+    private long getTimestamp(String date, String time) {
+        date = date.replace(",", "");
+        date = date.replace(";", "");
+        String[] s = date.split(" ");
+        String year = s[3];
+        String month = getMonth(s[1]);
+        String day = s[2];
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+
+        String[] hs = time.split(":");
+        String hh = hs[0];
+        String mm = hs[1];
+        if (mm.length() == 1) {
+            mm = "0" + mm;
+        }
+        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String dateTime = year + "-" + month + "-" + day + " " + hh + ":" + mm + ":59";
+        Date dt = new Date();
+        try {
+            dt = dateTimeFormatter.parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dt.getTime();
+    }
+
+    private String getMonth(String month) {
+        switch (month) {
+            case "January":
+                return "01";
+            case "February":
+                return "02";
+            case "March":
+                return "03";
+            case "April":
+                return "04";
+            case "May":
+                return "05";
+            case "June":
+                return "06";
+            case "July":
+                return "07";
+            case "August":
+                return "08";
+            case "September":
+                return "09";
+            case "October":
+                return "10";
+            case "November":
+                return "11";
+            case "December":
+                return "12";
+        }
+        return "";
+    }
+
 }
