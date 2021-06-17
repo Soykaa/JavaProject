@@ -1,5 +1,6 @@
 package com.planner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,15 @@ public class FriendFragment extends Fragment {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
+
+                friendsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
                     }
                 });
             }

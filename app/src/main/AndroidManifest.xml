@@ -9,24 +9,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.planner.SignInActivity"
-            android:label="SignInActivity"/>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SignInActivity"
+            android:label="SignInActivity" />
         <activity android:name=".SetTaskCompletedActivity" />
         <activity
             android:name=".FriendActivity"
             android:label="@string/title_activity_friend"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewWishesActivity"
-            android:label="@string/wishes"/>
-        <activity android:name=".ViewTasksActivity"
-            android:label="@string/tasks"/>
-        <activity android:name=".NewWishActivity"
-            android:label="@string/add_new_wish"/>
+        <activity
+            android:name=".ViewWishesActivity"
+            android:label="@string/wishes" />
+        <activity
+            android:name=".ViewTasksActivity"
+            android:label="@string/tasks" />
+        <activity
+            android:name=".NewWishActivity"
+            android:label="@string/add_new_wish" />
         <activity android:name=".SetWishCompletedActivity" />
         <activity
             android:name=".NewTaskActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:label="@string/add_new_task"/>
+            android:label="@string/add_new_task"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
