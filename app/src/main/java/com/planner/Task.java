@@ -6,27 +6,24 @@ public class Task {
     private String date;
     private String time;
     private int reward;
+    private int deadlinePenalty;
     private String description;
+    private long timestamp;
     private String id;
 
     public Task() {};
 
-    public Task(String parentId, String title, String date, String time, int reward, String description, String id) {
+    public Task(String parentId, String title, String date, String time, int reward, int deadlinePenalty, String description, String id, long timestamp) {
         this.parentId = parentId;
         this.title = title;
         this.date = date;
         this.time = time;
         this.reward = reward;
+        this.deadlinePenalty = deadlinePenalty;
         this.description = description;
         this.id = id;
+        this.timestamp = timestamp;
     }
-
-//    public Task(String parentId, String title, String description, int reward) {
-//        this.parentId = parentId;
-//        this.title = title;
-//        this.description = description;
-//        this.reward = reward;
-//    }
 
     public String getParentId() {
         return parentId;
@@ -48,6 +45,10 @@ public class Task {
         return reward;
     }
 
+    public int getDeadlinePenalty() {
+        return deadlinePenalty;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -58,6 +59,10 @@ public class Task {
 
     public String getId() {
         return id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 }
 

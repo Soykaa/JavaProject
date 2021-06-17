@@ -75,6 +75,15 @@ public class FriendFragment extends Fragment {
 
                     }
                 });
+
+                friendsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull

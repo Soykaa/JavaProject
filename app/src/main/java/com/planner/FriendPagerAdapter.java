@@ -5,10 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
-    public CustomFragmentPagerAdapter(@NonNull FragmentManager fm) {
+public class FriendPagerAdapter extends FragmentPagerAdapter {
+    public FriendPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
+
 
     @NonNull
     @Override
@@ -30,7 +31,7 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch(position){
+        switch (position) {
             case 0:
                 return "REQUESTS";
             case 1:

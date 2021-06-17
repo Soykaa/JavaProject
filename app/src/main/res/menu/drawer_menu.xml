@@ -4,15 +4,14 @@
     tools:showIn="navigation_view">
 
 
-    <group android:checkableBehavior="single">
+    <group >
         <item
             android:id="@+id/nav_feed"
             android:title="Feed" />
     </group>
 
     <group
-        android:id="@+id/menu_middle"
-        android:checkableBehavior="single">
+        android:id="@+id/menu_middle">
         <item
             android:id="@+id/nav_friends"
             android:title="Friends" />
@@ -30,7 +29,7 @@
 
     </group>
 
-    <group android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/nav_sign_out"
             android:title="Sign out" />
