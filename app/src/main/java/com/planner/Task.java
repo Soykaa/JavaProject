@@ -1,6 +1,7 @@
 package com.planner;
 
 public class Task {
+    private String parentId;
     private String title;
     private String date;
     private String time;
@@ -12,7 +13,8 @@ public class Task {
 
     public Task() {};
 
-    public Task(String title, String date, String time, int reward, int deadlinePenalty, String description, String id, long timestamp) {
+    public Task(String parentId, String title, String date, String time, int reward, int deadlinePenalty, String description, String id, long timestamp) {
+        this.parentId = parentId;
         this.title = title;
         this.date = date;
         this.time = time;
@@ -23,30 +25,8 @@ public class Task {
         this.timestamp = timestamp;
     }
 
-    public Task(String title, String date, String time, int reward, int deadlinePenalty, String description, String id) {
-        this.title = title;
-        this.date = date;
-        this.time = time;
-        this.reward = reward;
-        this.deadlinePenalty = deadlinePenalty;
-        this.description = description;
-        this.id = id;
-    }
-
-    public Task(String title, String date, String time, int reward, String description, String id, int timestamp) {
-        this.title = title;
-        this.date = date;
-        this.time = time;
-        this.reward = reward;
-        this.description = description;
-        this.id = id;
-        this.timestamp = timestamp;
-    }
-
-    public Task(String title, String description, int reward) {
-        this.title = title;
-        this.description = description;
-        this.reward = reward;
+    public String getParentId() {
+        return parentId;
     }
 
     public String getTitle() {

@@ -13,11 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
@@ -61,10 +58,10 @@ public class ViewTasksActivity extends AppCompatActivity {
 
         FloatingActionButton imageAddWish = findViewById(R.id.imageAddTask);
         ListView taskListView = findViewById(R.id.tasksListView);
-      //  ImageView imageBack = findViewById(R.id.imageBackAllTasks);
+        ImageView imageBack = findViewById(R.id.imageBackAllTasks);
         EditText tasksSearch = findViewById(R.id.inputSearchTasks);
 
-       // imageBack.setOnClickListener(v -> onBackPressed());
+        imageBack.setOnClickListener(v -> onBackPressed());
         imageAddWish.setOnClickListener(v -> startActivityForResult(
                 new Intent(this, NewTaskActivity.class), RequestCodes.REQUEST_CODE_ADD_TASK));
 
@@ -76,7 +73,6 @@ public class ViewTasksActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tasks.clear();
-
                 for (DataSnapshot s : snapshot.child("users").child(currentUserID).child("taskIDs").getChildren()) {
                     String taskID = s.getValue(String.class);
                     Task t = snapshot.child("tasks").child(taskID).getValue(Task.class);
@@ -101,6 +97,7 @@ public class ViewTasksActivity extends AppCompatActivity {
             intent.putExtra("reward", tasks.get(position).getReward());
             intent.putExtra("desc", tasks.get(position).getDescription());
             intent.putExtra("pos", position);
+            intent.putExtra("parentId", tasks.get(position).getParentId());
             taskAdapter.notifyDataSetChanged();
             startActivityForResult(intent, RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED);
         });
@@ -126,13 +123,10 @@ public class ViewTasksActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RequestCodes.REQUEST_CODE_SET_TASK_COMPLETED) {
-                boolean isOk = data.getBooleanExtra("isOk", false);
-                if (isOk) {
-                    int position = data.getIntExtra("pos", -1);
-                    String uploadId = data.getStringExtra("uploadId");
-                    CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP, uploadId);
-                    makeCompleted(tmp);
-                }
+                int position = data.getIntExtra("pos", -1);
+                String uploadId = data.getStringExtra("uploadId");
+                CompletedTask tmp = new CompletedTask(tasks.get(position).getId(), currentUserID, ServerValue.TIMESTAMP, uploadId);
+                makeCompleted(tmp);
             }
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,6 +60,13 @@ public class FriendFragment extends Fragment {
                                     .load(imageId)
                                     .placeholder(R.drawable.ic_launcher_foreground)
                                     .into(friendsViewHolder.userImage);
+                            friendsViewHolder.suggestTask.setOnClickListener(v -> {
+                                Intent intent = new Intent(getContext(), NewTaskActivity.class);
+                                String currentUserId = PlannerCostants.mAuth.getCurrentUser().getUid();
+                                intent.putExtra("parentId", currentUserId);
+                                intent.putExtra("adresseId", userId);
+                                startActivity(intent);
+                            });
                         }
                     }
 
@@ -95,11 +102,13 @@ public class FriendFragment extends Fragment {
 
         private final TextView userName;
         private final CircleImageView userImage;
+        private final ImageView suggestTask;
 
         public friendsViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.friend_name);
             userImage = itemView.findViewById(R.id.friend_image);
+            suggestTask = itemView.findViewById(R.id.suggestTask);
         }
     }
 }

@@ -12,8 +12,6 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
-
 import com.google.firebase.database.DatabaseReference;
 
 import java.text.DateFormat;
@@ -71,6 +69,9 @@ public class NewTaskActivity extends AppCompatActivity
         TextView dateDeadline = findViewById(R.id.deadlineTextTask);
         TextView timeDeadline = findViewById(R.id.timeTextTask);
 
+        String parentId = getIntent().getStringExtra("parentId");
+        String adresseId = getIntent().getStringExtra("adresseId");
+
         imageBack.setOnClickListener(v -> onBackPressed());
         dateDeadline.setOnClickListener(v -> {
             DialogFragment datePicker = new DatePickerFragment(calendar);
@@ -94,13 +95,23 @@ public class NewTaskActivity extends AppCompatActivity
                 return;
             }
 
+            String taskParentId = "me";
 
-            DatabaseReference taskRef = PlannerCostants.databaseReference.child("tasks").push();
+            if (parentId != null) {
+                taskParentId = parentId;
+            }
 
+            DatabaseReference taskRef;
+            if (parentId == null) {
+                taskRef = PlannerCostants.databaseReference.child("tasks").push();
+            } else {
+                taskRef = PlannerCostants.databaseReference.child("offeredTasks").push();
+            }
             String date = dateDeadline.getText().toString();
             String time = timeDeadline.getText().toString();
 
             Task task = new Task(
+                    taskParentId,
                     title.getText().toString(),
                     date,
                     time,
@@ -112,8 +123,12 @@ public class NewTaskActivity extends AppCompatActivity
             );
             taskRef.setValue(task);
 
-            String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
-            PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
+            if (parentId == null) {
+                String currentUserID = PlannerCostants.mAuth.getCurrentUser().getUid();
+                PlannerCostants.databaseReference.child("users").child(currentUserID).child("taskIDs").push().setValue(taskRef.getKey());
+            } else {
+                PlannerCostants.databaseReference.child("users").child(adresseId).child("offeredTaskIDs").push().setValue(taskRef.getKey());
+            }
 
             finish();
         });

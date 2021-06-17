@@ -3,10 +3,8 @@ package com.planner;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -108,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_friends:
                 friends();
                 break;
+            case R.id.nav_offered_tasks:
+                offeredTasks();
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
 
@@ -131,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void friends() {
         Intent intent = new Intent(this, FriendActivity.class);
+        startActivity(intent);
+    }
+
+    private void offeredTasks() {
+        Intent intent = new Intent(this, ViewOfferedTasksActivity.class);
         startActivity(intent);
     }
 

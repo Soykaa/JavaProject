@@ -39,6 +39,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private int reward;
     private int penalty;
     private int pos;
+    private String parentId;
     private Uri fileImageUri;
     private ImageView imageFile;
     private String uploadId = null;
@@ -93,6 +94,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             intent.putExtra("deadlinePenalty", penalty);
             intent.putExtra("pos", pos);
             intent.putExtra("timestamp", timestamp);
+            intent.putExtra("parentId", parentId);
 
             if (checkDeadline()) {
                 addRewardPoints(reward);
@@ -194,8 +196,8 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     }
 
 
-   private boolean checkDeadline() {
+    private boolean checkDeadline() {
         long current = new Date().getTime();
         return timestamp >= current;
-   }
+    }
 }
