@@ -21,7 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -30,10 +29,15 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
+
 public class SetTaskCompletedActivity extends AppCompatActivity {
     private String title;
     private String desc;
+    private String deadlineDate;
+    private String deadlineTime;
     private int reward;
+    private int penalty;
     private int pos;
     private Uri fileImageUri;
     private ImageView imageFile;
@@ -41,6 +45,7 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private DatabaseReference databaseSReference;
     private static final String TAG = "SetTaskCompleted";
+    private long timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,9 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         title = getIntent().getStringExtra("title");
         desc = getIntent().getStringExtra("desc");
         reward = getIntent().getIntExtra("reward", 0);
+        penalty = getIntent().getIntExtra("deadlinePenalty", 0);
         pos = getIntent().getIntExtra("pos", 0);
+        timestamp = getIntent().getLongExtra("timestamp", new Date().getTime());
 
         TextView taskTitle = findViewById(R.id.titleTask);
         taskTitle.setText(title);
@@ -64,7 +71,6 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
 
         TextView taskReward = findViewById(R.id.rewardTask);
         taskReward.setText("reward: " + reward);
-
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
         databaseSReference = FirebaseDatabase.getInstance().getReference("uploads");
@@ -77,14 +83,22 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
         });
 
         imageBack.setOnClickListener(v -> onBackPressed());
+
         imageSetTaskCompleted.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("isOk", true);
             intent.putExtra("title", title);
             intent.putExtra("desc", desc);
             intent.putExtra("reward", reward);
+            intent.putExtra("deadlinePenalty", penalty);
             intent.putExtra("pos", pos);
-            addRewardPoints(reward);
+            intent.putExtra("timestamp", timestamp);
+
+            if (checkDeadline()) {
+                addRewardPoints(reward);
+            } else {
+                substractPenaltyPoints(penalty);
+            }
             uploadFile(intent);
         });
     }
@@ -158,4 +172,30 @@ public class SetTaskCompletedActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void substractPenaltyPoints(int penalty) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String userID = mAuth.getCurrentUser().getUid();
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(userID)
+                .child("points");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Long points = snapshot.getValue(Long.class);
+                databaseRef.setValue(points - penalty);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            }
+        });
+    }
+
+
+   private boolean checkDeadline() {
+        long current = new Date().getTime();
+        return timestamp >= current;
+   }
 }

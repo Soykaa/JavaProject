@@ -14,8 +14,29 @@
         android:clipToPadding="false"
         android:paddingBottom="20dp"
 
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="50dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp">
+
+        <EditText
+            android:id="@+id/inputDescTask"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="340dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="Type task description here..."
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+
+            tools:ignore="MissingConstraints" />
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -96,6 +117,23 @@
 
         tools:ignore="MissingConstraints" />
 
+    <ImageView
+        android:id="@+id/setDeadlinePenalty"
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="285dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_decline_request"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"
+
+        tools:ignore="MissingConstraints" />
+
     <EditText
         android:id="@+id/inputTitleTask"
 
@@ -122,30 +160,6 @@
 
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="100dp" />
-
-
-    <EditText
-        android:id= "@+id/inputDescTask"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="320dp"
-        android:background="@null"
-        android:gravity="top"
-        android:hint="Type task description here..."
-        android:importantForAutofill="no"
-        android:includeFontPadding="false"
-        android:inputType="textMultiLine"
-        android:minHeight="100dp"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        tools:ignore="MissingConstraints" />
 
 
     <TextView
@@ -187,6 +201,32 @@
         app:layout_constraintTop_toTopOf="parent"
 
         tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/penaltyText"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="290dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="Set deadline penalty"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="MissingConstraints" />
+
+
+
 
 
     <ImageView

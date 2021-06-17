@@ -58,7 +58,12 @@ public class TasksViewCustomAdapter extends BaseAdapter implements ListAdapter {
 
         TextView tvContact = view.findViewById(R.id.tvContact);
         Task t = filteredTaskList.get(position);
-        String text = t.getTitle() + "\n\nReward: " + t.getReward() + "\nDeadline: " + t.getDate() + " " + t.getTime();
+        String text = "\n" +
+                 t.getTitle() +
+                "\n\nReward: " + t.getReward() +
+                "\nDeadline: " + t.getDate() + " " + t.getTime() +
+                "\nDeadline penalty: " + t.getDeadlinePenalty()
+                 + "\n";
         tvContact.setText(text);
 
         ImageView imageDelete = view.findViewById(R.id.deleteImage);
